@@ -64,11 +64,20 @@ const DagGridRoot: React.FC<DagGridProps> = ({
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const config = { ...DEFAULT_CONFIG, ...config_ };
+  const config = {
+    ...DEFAULT_CONFIG,
+    ...config_,
+    colors: config_?.colors ?? DEFAULT_CONFIG.colors,
+  };
   const visibility = { ...DEFAULT_VISIBILITY, ...visibility_ };
   const classNames = { ...DEFAULT_CLASSNAMES, ...classNames_ };
 
-  const layoutData = useGraphLayout(nodes, edges, branchOrder_);
+  const layoutData = useGraphLayout(
+    nodes,
+    edges,
+    branchOrder_,
+    config.colors ?? DEFAULT_CONFIG.colors
+  );
 
   // Trigger edge recalculation after branch order changes
   useLayoutEffect(() => {

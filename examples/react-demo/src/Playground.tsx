@@ -19,6 +19,34 @@ const defaultEdges = [
   { id: "e6", source: "4", target: "5" },
 ];
 
+const defaultColors = [
+  "#4ECDC4",
+  "#FF6B6B",
+  "#FED766",
+  "#45B7D1",
+  "#7CFFCB",
+  "#F7B267",
+  "#F4A261",
+  "#E76F51",
+];
+
+const COLOR_PRESETS = {
+  default: {
+    label: "Default",
+    colors: defaultColors,
+  },
+  sunset: {
+    label: "Sunset", // warm tones
+    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"],
+  },
+  forest: {
+    label: "Forest", // greens and earthy hues
+    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"],
+  },
+} as const;
+
+type ColorPreset = keyof typeof COLOR_PRESETS;
+
 export default function Playground() {
   const [branchOrder, setBranchOrder] = useState<string[]>([]);
   
@@ -38,13 +66,16 @@ export default function Playground() {
   const [padding, setPadding] = useState(20);
   const [labelLeftMargin, setLabelLeftMargin] = useState(20);
   const [cornerRadius, setCornerRadius] = useState(8);
-  
+  const [colorPreset, setColorPreset] = useState<ColorPreset>("default");
+
   // JSON editor
   const [nodesJson, setNodesJson] = useState(JSON.stringify(defaultNodes, null, 2));
   const [edgesJson, setEdgesJson] = useState(JSON.stringify(defaultEdges, null, 2));
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [nodes, setNodes] = useState(defaultNodes);
   const [edges, setEdges] = useState(defaultEdges);
+
+  const selectedPresetColors = colorPreset === "default" ? undefined : COLOR_PRESETS[colorPreset].colors;
 
   const handleNodesChange = (value: string) => {
     setNodesJson(value);
@@ -89,7 +120,7 @@ export default function Playground() {
             </div>
             <div className="border border-gray-200 rounded p-4 bg-gray-50 overflow-auto">
               <DagGrid
-                key={`${rowHeight}-${columnWidth}-${nodeDiameter}-${padding}-${labelLeftMargin}-${cornerRadius}`}
+                key={`${rowHeight}-${columnWidth}-${nodeDiameter}-${padding}-${labelLeftMargin}-${cornerRadius}-${colorPreset}`}
                 nodes={nodes}
                 edges={edges}
                 branchOrder={branchOrder}
@@ -102,6 +133,7 @@ export default function Playground() {
                   padding,
                   labelLeftMargin,
                   cornerRadius,
+                  ...(selectedPresetColors ? { colors: selectedPresetColors } : {}),
                 }}
                 visibility={{
                   showBranchDots,
@@ -274,6 +306,43 @@ export default function Playground() {
                     className="w-full"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Color Presets */}
+            <div className="border-b border-gray-200 pb-6">
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Branch Colors</h3>
+              <div className="space-y-3">
+                {(Object.entries(COLOR_PRESETS) as [ColorPreset, typeof COLOR_PRESETS[ColorPreset]][]).map(
+                  ([key, preset]) => (
+                    <label
+                      key={key}
+                      className="flex items-center justify-between gap-3 rounded border border-gray-200 px-3 py-2 hover:border-gray-300 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="colorPreset"
+                          value={key}
+                          checked={colorPreset === key}
+                          onChange={() => setColorPreset(key)}
+                          className="text-blue-600"
+                        />
+                        <span className="text-sm text-gray-700">{preset.label}</span>
+                      </div>
+                      <div className="flex gap-1">
+                        {(preset.colors ?? defaultColors).map((color) => (
+                          <span
+                            key={color}
+                            className="h-4 w-4 rounded-full border border-gray-200"
+                            style={{ backgroundColor: color }}
+                            aria-hidden
+                          />
+                        ))}
+                      </div>
+                    </label>
+                  )
+                )}
               </div>
             </div>
 
