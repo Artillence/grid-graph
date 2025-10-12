@@ -88,7 +88,7 @@ export default function Playground() {
               )}
             </div>
             <div className="border border-gray-200 rounded p-4 bg-gray-50 overflow-auto">
-              <WorkflowGraph
+              <WorkflowGraph.Root
                 key={`${rowHeight}-${columnWidth}-${nodeDiameter}-${padding}-${labelLeftMargin}-${cornerRadius}`}
                 nodes={nodes}
                 edges={edges}
@@ -111,7 +111,10 @@ export default function Playground() {
                   showNodeBackgrounds,
                   showNodeLabels,
                 }}
-              />
+              >
+                <WorkflowGraph.Header />
+                <WorkflowGraph.Content />
+              </WorkflowGraph.Root>
             </div>
           </div>
         </div>

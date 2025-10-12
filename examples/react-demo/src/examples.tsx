@@ -115,12 +115,15 @@ export default function Page() {
         <h2 className="mb-6 text-xl font-semibold text-gray-900">Linear Workflow Graph</h2>
         <p className="text-gray-600 mb-4 text-sm">A simple linear sequence of nodes connected in order.</p>
         <div className="overflow-x-auto">
-          <WorkflowGraph
+          <WorkflowGraph.Root
             nodes={nodes1}
             edges={edges1}
             branchOrder={branchOrder1}
             onReorderBranches={setBranchOrder1}
-          />
+          >
+            <WorkflowGraph.Header />
+            <WorkflowGraph.Content />
+          </WorkflowGraph.Root>
         </div>
       </div>
 
@@ -128,12 +131,15 @@ export default function Page() {
         <h2 className="mb-6 text-xl font-semibold text-gray-900">Git-like Branching Graph</h2>
         <p className="text-gray-600 mb-4 text-sm">A graph with explicit branch declarations, merge nodes, and branch inheritance.</p>
         <div className="overflow-x-auto">
-          <WorkflowGraph
+          <WorkflowGraph.Root
             nodes={nodes2}
             edges={edges2}
             branchOrder={branchOrder2}
             onReorderBranches={setBranchOrder2}
-          />
+          >
+            <WorkflowGraph.Header />
+            <WorkflowGraph.Content />
+          </WorkflowGraph.Root>
         </div>
       </div>
 
@@ -141,7 +147,10 @@ export default function Page() {
         <h2 className="mb-6 text-xl font-semibold text-gray-900">Multiple Sources and Sinks Graph</h2>
         <p className="text-gray-600 mb-4 text-sm">A workflow with multiple starting points and ending points.</p>
         <div className="overflow-x-auto">
-          <WorkflowGraph nodes={nodes4} edges={edges4} />
+          <WorkflowGraph.Root nodes={nodes4} edges={edges4}>
+            <WorkflowGraph.Header />
+            <WorkflowGraph.Content />
+          </WorkflowGraph.Root>
         </div>
       </div>
 
@@ -149,7 +158,10 @@ export default function Page() {
         <h2 className="mb-6 text-xl font-semibold text-gray-900">3-Lane Parallel Graph</h2>
         <p className="text-gray-600 mb-4 text-sm">Parallel execution lanes that converge into a single merge point.</p>
         <div className="overflow-x-auto">
-          <WorkflowGraph nodes={nodes5} edges={edges5} />
+          <WorkflowGraph.Root nodes={nodes5} edges={edges5}>
+            <WorkflowGraph.Header />
+            <WorkflowGraph.Content />
+          </WorkflowGraph.Root>
         </div>
       </div>
 
@@ -157,7 +169,10 @@ export default function Page() {
         <h2 className="mb-6 text-xl font-semibold text-gray-900">Disconnected Graph</h2>
         <p className="text-gray-600 mb-4 text-sm">Multiple separate graph components with no connections between them.</p>
         <div className="overflow-x-auto">
-          <WorkflowGraph nodes={nodes6} edges={edges6} />
+          <WorkflowGraph.Root nodes={nodes6} edges={edges6}>
+            <WorkflowGraph.Header />
+            <WorkflowGraph.Content />
+          </WorkflowGraph.Root>
         </div>
       </div>
     </div>
