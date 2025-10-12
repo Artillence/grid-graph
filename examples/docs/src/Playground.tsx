@@ -37,13 +37,13 @@ const COLOR_PRESETS = {
   },
   sunset: {
     label: "Sunset", // warm tones
-    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"],
+    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"] as string[],
   },
   forest: {
     label: "Forest", // greens and earthy hues
-    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"],
+    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"] as string[],
   },
-} as const;
+};
 
 type ColorPreset = keyof typeof COLOR_PRESETS;
 

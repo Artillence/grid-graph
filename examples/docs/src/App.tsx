@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import './App.css'
+import Documentation from './Documentation'
 import Examples from './examples'
 import Playground from './Playground'
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'playground' | 'examples'>('playground')
+  const [activeTab, setActiveTab] = useState<'documentation' | 'playground' | 'examples'>('documentation')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -17,14 +18,14 @@ function App() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setActiveTab('playground')}
+                onClick={() => setActiveTab('documentation')}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === 'playground'
+                  activeTab === 'documentation'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Playground
+                Documentation
               </button>
               <button
                 onClick={() => setActiveTab('examples')}
@@ -36,12 +37,24 @@ function App() {
               >
                 Examples
               </button>
+              <button
+                onClick={() => setActiveTab('playground')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'playground'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Playground
+              </button>
             </div>
           </div>
         </div>
       </div>
       
-      {activeTab === 'playground' ? <Playground /> : <Examples />}
+      {activeTab === 'documentation' && <Documentation />}
+      {activeTab === 'examples' && <Examples />}
+      {activeTab === 'playground' && <Playground />}
     </div>
   )
 }
