@@ -7,12 +7,13 @@ import { DEFAULT_CONFIG } from "../constants";
 export function useGraphLayout(
   nodes: GraphNode[],
   edges: Edge[],
-  branchOrder?: string[]
+  branchOrder?: string[],
+  colors: string[] = DEFAULT_CONFIG.colors
 ): LayoutData {
   return useMemo((): LayoutData => {
     try {
       const sortedIds = validateAndSort(nodes, edges);
-      const layout = calculateLayout(nodes, edges, sortedIds, DEFAULT_CONFIG.colors, branchOrder);
+      const layout = calculateLayout(nodes, edges, sortedIds, colors, branchOrder);
       return { ...layout, error: null };
     } catch (e: unknown) {
       console.error(e);
@@ -26,5 +27,5 @@ export function useGraphLayout(
         error: (e as Error).message,
       };
     }
-  }, [nodes, edges, branchOrder]);
+  }, [nodes, edges, branchOrder, colors]);
 }
