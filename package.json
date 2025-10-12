@@ -2,6 +2,25 @@
   "name": "dag-grid",
   "version": "1.0.0",
   "description": "dag-grid is a minimalist React component for rendering Directed Acyclic Graphs (DAGs) in a clean, readable grid layout. Inspired by VSCode git graph.",
+  "keywords": [
+    "react",
+    "dag",
+    "graph",
+    "visualization",
+    "directed-acyclic-graph",
+    "workflow",
+    "git-graph",
+    "component",
+    "typescript"
+  ],
+  "homepage": "https://artillence.github.io/dag-grid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Artillence/dag-grid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Artillence/dag-grid/issues"
+  },
   "license": "MIT",
   "author": "Gábor Pallos",
   "type": "commonjs",
@@ -17,10 +36,13 @@
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts && postcss src/styles.css -o dist/styles.css --no-map"
+    "build": "tsup src/index.ts --format esm,cjs --dts && postcss src/styles.css -o dist/styles.css --no-map",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.14",
