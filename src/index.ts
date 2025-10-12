@@ -1,2 +1,2 @@
-export { WorkflowGraph } from "./WorkflowGraph.js";
+export { DagGrid } from "./DagGrid.js";
 export * from "./types.js";

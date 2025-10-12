@@ -7,11 +7,8 @@ import { useGraphLayout, useEdgePaths } from "./hooks";
 import { buildGraphMaps } from "./layout";
 import { GraphHeader, GraphContent } from "./components";
 
-// ============================================================================
-// CONTEXT: WorkflowGraph Context for Compound Component Pattern
-// ============================================================================
 
-type WorkflowGraphContextValue = {
+type DagGridContextValue = {
   layoutData: LayoutData;
   edgePaths: { id: string; path: string; color: string }[];
   selected: string | null;
@@ -33,25 +30,22 @@ type WorkflowGraphContextValue = {
   edges: GraphProps["edges"];
 };
 
-const WorkflowGraphContext = React.createContext<WorkflowGraphContextValue | null>(null);
+const DagGridContext = React.createContext<DagGridContextValue | null>(null);
 
-const useWorkflowGraphContext = () => {
-  const context = React.useContext(WorkflowGraphContext);
+const useDagGridContext = () => {
+  const context = React.useContext(DagGridContext);
   if (!context) {
-    throw new Error("WorkflowGraph compound components must be used within WorkflowGraph.Root");
+    throw new Error("DagGrid compound components must be used within DagGrid");
   }
   return context;
 };
 
-// ============================================================================
-// COMPONENT: WorkflowGraph.Root
-// ============================================================================
 
-type WorkflowGraphRootProps = GraphProps & {
+type DagGridProps = GraphProps & {
   children?: React.ReactNode;
 };
 
-const WorkflowGraphRoot: React.FC<WorkflowGraphRootProps> = ({
+const DagGridRoot: React.FC<DagGridProps> = ({
   nodes,
   edges,
   onSelect,
@@ -122,7 +116,7 @@ const WorkflowGraphRoot: React.FC<WorkflowGraphRootProps> = ({
     onSelect?.(id);
   };
 
-  const contextValue: WorkflowGraphContextValue = {
+  const contextValue: DagGridContextValue = {
     layoutData,
     edgePaths,
     selected,
@@ -145,7 +139,7 @@ const WorkflowGraphRoot: React.FC<WorkflowGraphRootProps> = ({
   };
 
   return (
-    <WorkflowGraphContext.Provider value={contextValue}>
+    <DagGridContext.Provider value={contextValue}>
       <div
         className={classNames.container}
         style={{
@@ -155,17 +149,14 @@ const WorkflowGraphRoot: React.FC<WorkflowGraphRootProps> = ({
       >
         {children}
       </div>
-    </WorkflowGraphContext.Provider>
+    </DagGridContext.Provider>
   );
 };
 
-// ============================================================================
-// COMPONENT: WorkflowGraph.Header (Compound Component)
-// ============================================================================
 
-const WorkflowGraphHeader: React.FC = () => {
+const Header: React.FC = () => {
   const { layoutData, config, classNames, headerHeight, verticalLabels, visibility, onReorderBranches } =
-    useWorkflowGraphContext();
+    useDagGridContext();
 
   const showBranchDots = visibility.showBranchDots;
   const showBranchNames = visibility.showBranchNames;
@@ -187,11 +178,8 @@ const WorkflowGraphHeader: React.FC = () => {
   );
 };
 
-// ============================================================================
-// COMPONENT: WorkflowGraph.Content (Compound Component)
-// ============================================================================
 
-const WorkflowGraphContent: React.FC = () => {
+const Body: React.FC = () => {
   const {
     nodes,
     edges,
@@ -209,7 +197,7 @@ const WorkflowGraphContent: React.FC = () => {
     headerHeight,
     graphWidth,
     contentHeight,
-  } = useWorkflowGraphContext();
+  } = useDagGridContext();
 
   return (
     <GraphContent
@@ -234,12 +222,8 @@ const WorkflowGraphContent: React.FC = () => {
   );
 };
 
-// ============================================================================
-// COMPONENT: WorkflowGraph (Compound Components Export)
-// ============================================================================
 
-export const WorkflowGraph = {
-  Root: WorkflowGraphRoot,
-  Header: WorkflowGraphHeader,
-  Content: WorkflowGraphContent,
-};
+export const DagGrid = Object.assign(DagGridRoot, {
+  Header: Header,
+  Content: Body,
+});

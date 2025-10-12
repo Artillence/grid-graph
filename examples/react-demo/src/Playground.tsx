@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WorkflowGraph } from "dag-grid";
+import { DagGrid } from "dag-grid";
 
 const defaultNodes = [
   { id: "1", label: "Start", branch: "main" },
@@ -88,7 +88,7 @@ export default function Playground() {
               )}
             </div>
             <div className="border border-gray-200 rounded p-4 bg-gray-50 overflow-auto">
-              <WorkflowGraph.Root
+              <DagGrid
                 key={`${rowHeight}-${columnWidth}-${nodeDiameter}-${padding}-${labelLeftMargin}-${cornerRadius}`}
                 nodes={nodes}
                 edges={edges}
@@ -112,9 +112,9 @@ export default function Playground() {
                   showNodeLabels,
                 }}
               >
-                <WorkflowGraph.Header />
-                <WorkflowGraph.Content />
-              </WorkflowGraph.Root>
+                <DagGrid.Header />
+                <DagGrid.Content />
+              </DagGrid>
             </div>
           </div>
         </div>
