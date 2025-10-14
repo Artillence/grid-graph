@@ -1,19 +1,28 @@
-import { useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Box, Container, Tabs, Tab, CssBaseline, AppBar, Toolbar, Typography } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import IconButton from '@mui/material/IconButton';
-import HomePage from './pages/HomePage';
-import ExamplesPage from './pages/ExamplesPage.js';
-import PlaygroundPage from './pages/PlaygroundPage.js';
-import ReferencePage from './pages/ApiDocsPage.js';
-import 'grid-graph/styles.css';
+import { useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  Box,
+  Container,
+  Tabs,
+  Tab,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import IconButton from "@mui/material/IconButton";
+import HomePage from "./pages/HomePage";
+import ExamplesPage from "./pages/ExamplesPage.js";
+import PlaygroundPage from "./pages/PlaygroundPage.js";
+import ReferencePage from "./pages/ApiDocsPage.js";
+import "grid-graph/styles.css";
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
   },
 });
@@ -28,9 +37,17 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
         <AppBar position="static" elevation={1}>
           <Toolbar>
+
+            <img
+              src="logo.svg"
+              alt="Grid Graph logo"
+              style={{ width: 28, height: 28 }}
+            />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Grid Graph
             </Typography>
@@ -48,7 +65,7 @@ function App() {
             onChange={handleTabChange}
             textColor="inherit"
             indicatorColor="secondary"
-            sx={{ backgroundColor: 'primary.dark' }}
+            sx={{ backgroundColor: "primary.dark" }}
           >
             <Tab label="Home" />
             <Tab label="Examples" />
@@ -64,10 +81,14 @@ function App() {
           {currentTab === 3 && <ReferencePage />}
         </Container>
 
-        <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto', backgroundColor: '#f5f5f5' }}>
+        <Box
+          component="footer"
+          sx={{ py: 3, px: 2, mt: "auto", backgroundColor: "#f5f5f5" }}
+        >
           <Container maxWidth="xl">
             <Typography variant="body2" color="text.secondary" align="center">
-              Grid Graph - A React library for visualizing directed acyclic graphs
+              Grid Graph - A React library for visualizing directed acyclic
+              graphs
             </Typography>
           </Container>
         </Box>

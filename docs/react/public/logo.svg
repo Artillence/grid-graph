@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- connecting paths -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+    <!-- teal main vertical -->
+    <path d="M120 24 v80" stroke="#18A999" />
+    <!-- left branch: longer and closer -->
+    <path d="M120 104 C106 104 100 124 100 188" stroke="#FF5252" />
+    <!-- right branch: shorter -->
+    <path d="M120 104 C134 104 152 124 152 160" stroke="#FFC107" />
+  </g>
+
+  <!-- nodes -->
+  <!-- top -->
+  <g transform="translate(120,24)">
+    <circle r="14" fill="#fff" stroke="#18A999" stroke-width="7"/>
+    <circle r="6" fill="#18A999"/>
+  </g>
+
+  <!-- junction -->
+  <g transform="translate(120,104)">
+    <circle r="14" fill="#fff" stroke="#18A999" stroke-width="7"/>
+    <circle r="6" fill="#18A999"/>
+  </g>
+
+  <!-- left node -->
+  <g transform="translate(100,188)">
+    <circle r="13" fill="#fff" stroke="#FF5252" stroke-width="6"/>
+    <circle r="5" fill="#FF5252"/>
+  </g>
+
+  <!-- right node -->
+  <g transform="translate(152,160)">
+    <circle r="13" fill="#fff" stroke="#FFC107" stroke-width="6"/>
+    <circle r="5" fill="#FFC107"/>
+  </g>
+</svg>
