@@ -1,12 +1,15 @@
 "use client";
 import React, { useState, useLayoutEffect, useRef } from "react";
 import { GraphProps, LayoutData } from "./types";
-import { DEFAULT_CONFIG, DEFAULT_VISIBILITY, DEFAULT_CLASSNAMES } from "./constants";
+import {
+  DEFAULT_CONFIG,
+  DEFAULT_VISIBILITY,
+  DEFAULT_CLASSNAMES,
+} from "./constants";
 import { computeHeaderHeight } from "./utils";
 import { useGraphLayout, useEdgePaths } from "./hooks";
 import { buildGraphMaps } from "./layout";
 import { GraphHeader, GraphContent } from "./components";
-
 
 type GridGraphContextValue = {
   layoutData: LayoutData;
@@ -30,16 +33,19 @@ type GridGraphContextValue = {
   edges: GraphProps["edges"];
 };
 
-const GridGraphContext = React.createContext<GridGraphContextValue | null>(null);
+const GridGraphContext = React.createContext<GridGraphContextValue | null>(
+  null,
+);
 
 const useGridGraphContext = () => {
   const context = React.useContext(GridGraphContext);
   if (!context) {
-    throw new Error("GridGraph compound components must be used within GridGraph");
+    throw new Error(
+      "GridGraph compound components must be used within GridGraph",
+    );
   }
   return context;
 };
-
 
 type GridGraphProps = GraphProps & {
   children?: React.ReactNode;
@@ -75,7 +81,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     nodes,
     edges,
     branchOrder_,
-    config.colors ?? DEFAULT_CONFIG.colors
+    config.colors ?? DEFAULT_CONFIG.colors,
   );
 
   const { parentMap } = buildGraphMaps(nodes, edges);
@@ -88,14 +94,14 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     parentMap,
     config.cornerRadius,
     config,
-    0
   );
 
   if (layoutData.error) {
     throw new Error(`Graph Layout Error: ${layoutData.error}`);
   }
 
-  const graphWidth = (layoutData.maxCol + 1) * config.columnWidth + config.padding;
+  const graphWidth =
+    (layoutData.maxCol + 1) * config.columnWidth + config.padding;
   const contentHeight = nodes.length * config.rowHeight;
   const headerHeight =
     config.headerHeight ??
@@ -103,7 +109,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
       visibility.showBranchDots,
       visibility.showBranchNames,
       verticalLabels,
-      layoutData.branchLaneMap
+      layoutData.branchLaneMap,
     );
   const totalWidth = visibility.showNodeLabels ? graphWidth + 200 : graphWidth;
 
@@ -149,10 +155,16 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   );
 };
 
-
 const Header: React.FC = () => {
-  const { layoutData, config, classNames, headerHeight, verticalLabels, visibility, onReorderBranches } =
-    useGridGraphContext();
+  const {
+    layoutData,
+    config,
+    classNames,
+    headerHeight,
+    verticalLabels,
+    visibility,
+    onReorderBranches,
+  } = useGridGraphContext();
 
   const showBranchDots = visibility.showBranchDots;
   const showBranchNames = visibility.showBranchNames;
@@ -173,7 +185,6 @@ const Header: React.FC = () => {
     />
   );
 };
-
 
 const Body: React.FC = () => {
   const {
@@ -217,7 +228,6 @@ const Body: React.FC = () => {
     />
   );
 };
-
 
 export const GridGraph = Object.assign(GridGraphRoot, {
   Header: Header,

@@ -1,7 +1,5 @@
 import { Edge, Node, LayoutData } from "./types";
 
-
-
 export function buildGraphMaps(nodes: Node[], edges: Edge[]) {
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   const parentMap = new Map<string, string[]>();
@@ -26,7 +24,7 @@ export function buildGraphMaps(nodes: Node[], edges: Edge[]) {
 export function assignBranches(
   sortedNodeIds: string[],
   nodeMap: Map<string, Node>,
-  parentMap: Map<string, string[]>
+  parentMap: Map<string, string[]>,
 ): Map<string, string> {
   const nodeBranchMap = new Map<string, string>();
 
@@ -52,19 +50,19 @@ export function assignBranches(
 function assignLanes(
   sortedNodeIds: string[],
   nodeBranchMap: Map<string, string>,
-  childMap: Map<string, string[]>
+  childMap: Map<string, string[]>,
 ): { nodeColumnMap: Map<string, number>; branchLaneMap: Map<string, number> } {
   const branchLaneMap = new Map<string, number>();
   const nodeColumnMap = new Map<string, number>();
 
-    let nextLane = 0;
-    for (const nodeId of sortedNodeIds) {
-      const branch = nodeBranchMap.get(nodeId)!;
-      if (!branchLaneMap.has(branch)) {
-        branchLaneMap.set(branch, nextLane++);
-      }
-      nodeColumnMap.set(nodeId, branchLaneMap.get(branch)!);
+  let nextLane = 0;
+  for (const nodeId of sortedNodeIds) {
+    const branch = nodeBranchMap.get(nodeId)!;
+    if (!branchLaneMap.has(branch)) {
+      branchLaneMap.set(branch, nextLane++);
     }
+    nodeColumnMap.set(nodeId, branchLaneMap.get(branch)!);
+  }
 
   return { nodeColumnMap, branchLaneMap };
 }
@@ -73,7 +71,7 @@ function applyBranchOrder(
   order_: string[] | undefined,
   branchLaneMap_: Map<string, number>,
   nodeColumnMap: Map<string, number>,
-  nodeBranchMap: Map<string, string>
+  nodeBranchMap: Map<string, string>,
 ): Map<string, number> {
   if (!order_ || order_.length === 0) {
     return branchLaneMap_;
@@ -108,29 +106,32 @@ export function calculateLayout(
   nodes: Node[],
   edges: Edge[],
   sortedNodeIds: string[],
-  colors : string[], 
+  colors: string[],
   order_?: string[],
-): Omit<LayoutData, 'error'> {
+): Omit<LayoutData, "error"> {
   const { nodeMap, parentMap, childMap } = buildGraphMaps(nodes, edges);
   const nodeBranchMap = assignBranches(sortedNodeIds, nodeMap, parentMap);
   const { nodeColumnMap, branchLaneMap } = assignLanes(
     sortedNodeIds,
     nodeBranchMap,
-    childMap
+    childMap,
   );
 
   const reorderedBranchLaneMap = applyBranchOrder(
     order_,
     branchLaneMap,
     nodeColumnMap,
-    nodeBranchMap
+    nodeBranchMap,
   );
 
-  const maxColumn = nodeColumnMap.size > 0
-    ? Math.max(...Array.from(nodeColumnMap.values()))
-    : 0;
+  const maxColumn =
+    nodeColumnMap.size > 0
+      ? Math.max(...Array.from(nodeColumnMap.values()))
+      : 0;
 
-  const nodeRenderIndex = new Map(sortedNodeIds.map((id, index) => [id, index]));
+  const nodeRenderIndex = new Map(
+    sortedNodeIds.map((id, index) => [id, index]),
+  );
 
   return {
     nodeColumnMap,
@@ -144,14 +145,14 @@ export function calculateLayout(
 
 export function createColorMap(
   nodeBranchMap: Map<string, string>,
-  colors: string[]
+  colors: string[],
 ): Map<string, string> {
   const uniqueBranches = [...new Set(nodeBranchMap.values())];
   const colorMap = new Map<string, string>();
-  
+
   uniqueBranches.forEach((branch, i) => {
     colorMap.set(branch, colors[i % colors.length]);
   });
-  
+
   return colorMap;
 }

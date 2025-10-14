@@ -18,9 +18,8 @@ export function useEdgePaths(
 
   useLayoutEffect(() => {
     if (layoutData.error) return;
-    
+
     // Force immediate recalculation when branch lanes change
-    // This ensures edges start from the correct initial position before CSS transitions
     const recalculate = () => {
       const containerRect = containerRef.current?.getBoundingClientRect();
       const paths = calculateEdgePaths(
@@ -33,25 +32,27 @@ export function useEdgePaths(
         cornerRadius,
         layoutData.nodeColumnMap,
         layoutData.nodeRenderIndex,
-        config
+        config,
       );
       setEdgePaths(paths);
     };
-    
+
     // Create a stable dependency key to prevent infinite loops
     // Include branch lane mapping to detect reordering
     const depsKey = JSON.stringify({
-      edgeIds: edges.map(e => `${e.source}-${e.target}`),
-      nodeIds: nodes.map(n => n.id),
+      edgeIds: edges.map((e) => `${e.source}-${e.target}`),
+      nodeIds: nodes.map((n) => n.id),
       nodeColumns: Array.from(layoutData.nodeColumnMap.entries()),
-      branchLanes: Array.from(layoutData.branchLaneMap.entries()).sort((a, b) => a[1] - b[1]),
+      branchLanes: Array.from(layoutData.branchLaneMap.entries()).sort(
+        (a, b) => a[1] - b[1],
+      ),
       cornerRadius,
     });
-    
+
     // Only update if dependencies actually changed
     if (prevDepsRef.current === depsKey) return;
     prevDepsRef.current = depsKey;
-    
+
     // Recalculate immediately from layout data (not DOM positions)
     recalculate();
   });

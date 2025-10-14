@@ -1,10 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import Examples from './examples'
-import Playground from './Playground'
+import { useState } from "react";
+import "./App.css";
+import Examples from "./examples";
+import Playground from "./Playground";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'playground' | 'examples'>('playground')
+  const [activeTab, setActiveTab] = useState<"playground" | "examples">(
+    "playground",
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -13,25 +15,27 @@ function App() {
           <div className="flex items-center justify-between py-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Grid-Graph</h1>
-              <p className="text-sm text-gray-600">Interactive graph visualization component</p>
+              <p className="text-sm text-gray-600">
+                Interactive graph visualization component
+              </p>
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setActiveTab('playground')}
+                onClick={() => setActiveTab("playground")}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === 'playground'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  activeTab === "playground"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 Playground
               </button>
               <button
-                onClick={() => setActiveTab('examples')}
+                onClick={() => setActiveTab("examples")}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === 'examples'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  activeTab === "examples"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 Examples
@@ -40,10 +44,10 @@ function App() {
           </div>
         </div>
       </div>
-      
-      {activeTab === 'playground' ? <Playground /> : <Examples />}
+
+      {activeTab === "playground" ? <Playground /> : <Examples />}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

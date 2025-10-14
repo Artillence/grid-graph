@@ -12,7 +12,7 @@ export const BranchDots: React.FC<{
   const { draggedBranch, hoverBranch, handleMouseDown } = useBranchDrag(
     branchLaneMap,
     config.columnWidth,
-    onReorderBranches
+    onReorderBranches,
   );
 
   return (
@@ -26,10 +26,10 @@ export const BranchDots: React.FC<{
         return (
           <div
             key={`dot-${branchName}`}
-            className={`gg__branch-dot ${isDragging ? 'gg__branch-dot-dragging' : ''} ${isHoverTarget ? 'gg__branch-dot-hover' : ''} ${onReorderBranches ? 'gg__branch-dot-draggable' : 'gg__branch-dot-static'}`}
+            className={`gg__branch-dot ${isDragging ? "gg__branch-dot-dragging" : ""} ${isHoverTarget ? "gg__branch-dot-hover" : ""} ${onReorderBranches ? "gg__branch-dot-draggable" : "gg__branch-dot-static"}`}
             style={{
               left: xPos,
-              transform: 'translateX(-50%)',
+              transform: "translateX(-50%)",
               backgroundColor: color,
             }}
             onMouseDown={(e) => handleMouseDown(branchName, e)}
@@ -74,7 +74,11 @@ export const BranchNames: React.FC<{
       }
 
       return (
-        <div key={`label-h-${branchName}`} className={className} style={baseStyle}>
+        <div
+          key={`label-h-${branchName}`}
+          className={className}
+          style={baseStyle}
+        >
           {branchName}
         </div>
       );
@@ -88,10 +92,19 @@ export const LaneLines: React.FC<{
   className: string;
   headerHeight: string;
 }> = ({ maxCol, config, className, headerHeight }) => (
-  <div className="gg__lane-lines-container" style={{ top: `-${headerHeight || 0}`, bottom: 0 }}>
+  <div
+    className="gg__lane-lines-container"
+    style={{ top: `-${headerHeight || 0}`, bottom: 0 }}
+  >
     {Array.from({ length: maxCol + 1 }).map((_, colIndex) => {
       const xPos = getLaneXPosition(colIndex, config);
-      return <div key={`lane-${colIndex}`} className={className} style={{ left: xPos - 1 }} />;
+      return (
+        <div
+          key={`lane-${colIndex}`}
+          className={className}
+          style={{ left: xPos - 1 }}
+        />
+      );
     })}
   </div>
 );
@@ -111,8 +124,8 @@ export const NodeBackgrounds: React.FC<{
           selected === nodeId
             ? classNames.nodeBackgroundSelected
             : hovered === nodeId
-            ? classNames.nodeBackgroundHovered
-            : ""
+              ? classNames.nodeBackgroundHovered
+              : ""
         }`}
         style={{
           height: rowHeight,
@@ -206,7 +219,7 @@ export const Nodes: React.FC<{
     {nodes.map((node) => {
       const col = nodeColumnMap.get(node.id) ?? 0;
       const branch = nodeBranchMap.get(node.id);
-      const color = branch ? branchColorMap.get(branch) ?? "#ccc" : "#ccc";
+      const color = branch ? (branchColorMap.get(branch) ?? "#ccc") : "#ccc";
       const isSelected = selected === node.id;
       const isHovered = hovered === node.id;
       const top = (nodeRenderIndex.get(node.id) ?? 0) * config.rowHeight;
@@ -220,7 +233,10 @@ export const Nodes: React.FC<{
           onMouseLeave={onMouseLeave}
           style={{ height: config.rowHeight, top }}
         >
-          <div className="gg__node-circle-wrapper" style={{ width: graphWidth }}>
+          <div
+            className="gg__node-circle-wrapper"
+            style={{ width: graphWidth }}
+          >
             <NodeCircle
               nodeId={node.id}
               color={color}

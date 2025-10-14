@@ -5,11 +5,13 @@ import { detectCycles, topologicalSort } from "./algorithm";
 export function validateGraph(
   nodeMap: Map<string, Node>,
   parentMap: Map<string, string[]>,
-  childMap: Map<string, string[]>
+  childMap: Map<string, string[]>,
 ): void {
   for (const [nodeId, parents] of parentMap.entries()) {
     if (parents.length > 1 && !nodeMap.get(nodeId)?.branch) {
-      throw new Error(`Node "${nodeId}" is a merge node but lacks a 'branch' property.`);
+      throw new Error(
+        `Node "${nodeId}" is a merge node but lacks a 'branch' property.`,
+      );
     }
   }
 
@@ -19,14 +21,18 @@ export function validateGraph(
       const isRoot = (parentMap.get(nodeId) || []).length === 0;
 
       if (isRoot && !node.branch) {
-        throw new Error(`Node "${nodeId}" is a root branch point and must have a 'branch' property.`);
+        throw new Error(
+          `Node "${nodeId}" is a root branch point and must have a 'branch' property.`,
+        );
       }
 
-      const childrenWithoutBranch = children.filter((childId) => !nodeMap.get(childId)?.branch);
+      const childrenWithoutBranch = children.filter(
+        (childId) => !nodeMap.get(childId)?.branch,
+      );
 
       if (childrenWithoutBranch.length > 1) {
         throw new Error(
-          `Node "${nodeId}" creates a branch. All but one child must have an explicit 'branch' property.`
+          `Node "${nodeId}" creates a branch. All but one child must have an explicit 'branch' property.`,
         );
       }
     }
@@ -36,7 +42,10 @@ export function validateGraph(
 export function validateAndSort(nodes: Node[], edges: Edge[]): string[] {
   if (nodes.length === 0) return [];
 
-  const { nodeMap, parentMap, childMap, inDegree } = buildGraphMaps(nodes, edges);
+  const { nodeMap, parentMap, childMap, inDegree } = buildGraphMaps(
+    nodes,
+    edges,
+  );
 
   validateGraph(nodeMap, parentMap, childMap);
 

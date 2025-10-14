@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 export function useBranchDrag(
   branchLaneMap: Map<string, number>,
   columnWidth: number,
-  onReorderBranches?: (newOrder: string[]) => void
+  onReorderBranches?: (newOrder: string[]) => void,
 ) {
   const [draggedBranch, setDraggedBranch] = useState<string | null>(null);
   const [hoverBranch, setHoverBranch] = useState<string | null>(null);
@@ -20,22 +20,35 @@ export function useBranchDrag(
     if (!draggedBranch) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const branches = Array.from(branchLaneMap.entries()).sort((a, b) => a[1] - b[1]);
-      const currentIndex = branches.findIndex(([name]) => name === draggedBranch);
+      const branches = Array.from(branchLaneMap.entries()).sort(
+        (a, b) => a[1] - b[1],
+      );
+      const currentIndex = branches.findIndex(
+        ([name]) => name === draggedBranch,
+      );
       if (currentIndex === -1) return;
 
       const deltaX = e.clientX - dragStartX.current;
       const columnOffset = Math.round(deltaX / columnWidth);
-      const targetIndex = Math.max(0, Math.min(branches.length - 1, currentIndex + columnOffset));
+      const targetIndex = Math.max(
+        0,
+        Math.min(branches.length - 1, currentIndex + columnOffset),
+      );
 
-      setHoverBranch(targetIndex !== currentIndex ? branches[targetIndex][0] : null);
+      setHoverBranch(
+        targetIndex !== currentIndex ? branches[targetIndex][0] : null,
+      );
     };
 
     const handleMouseUp = (e: MouseEvent) => {
       if (!onReorderBranches) return;
 
-      const branches = Array.from(branchLaneMap.entries()).sort((a, b) => a[1] - b[1]);
-      const currentIndex = branches.findIndex(([name]) => name === draggedBranch);
+      const branches = Array.from(branchLaneMap.entries()).sort(
+        (a, b) => a[1] - b[1],
+      );
+      const currentIndex = branches.findIndex(
+        ([name]) => name === draggedBranch,
+      );
       if (currentIndex === -1) {
         setDraggedBranch(null);
         setHoverBranch(null);
@@ -44,11 +57,17 @@ export function useBranchDrag(
 
       const deltaX = e.clientX - dragStartX.current;
       const columnOffset = Math.round(deltaX / columnWidth);
-      const targetIndex = Math.max(0, Math.min(branches.length - 1, currentIndex + columnOffset));
+      const targetIndex = Math.max(
+        0,
+        Math.min(branches.length - 1, currentIndex + columnOffset),
+      );
 
       if (targetIndex !== currentIndex) {
         const newOrder = [...branches.map(([name]) => name)];
-        [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
+        [newOrder[currentIndex], newOrder[targetIndex]] = [
+          newOrder[targetIndex],
+          newOrder[currentIndex],
+        ];
         onReorderBranches(newOrder);
       }
 

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { GridGraph } from "grid-graph";
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; 
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 // ---------------------------------------------------------------------
 // 1. Helper Component: CodeBlock with Syntax Highlighting
@@ -19,10 +19,10 @@ const CodeBlock = ({ code }: { code: string }) => (
         language="tsx"
         style={vscDarkPlus}
         customStyle={{
-          padding: '1.25em',
+          padding: "1.25em",
           margin: 0,
-          fontSize: '0.875rem',
-          lineHeight: '1.4',
+          fontSize: "0.875rem",
+          lineHeight: "1.4",
         }}
         wrapLines={true}
       >
@@ -43,15 +43,22 @@ interface ExampleCardProps {
   children: React.ReactNode;
 }
 
-const ExampleCard = ({ title, description, code, children }: ExampleCardProps) => (
+const ExampleCard = ({
+  title,
+  description,
+  code,
+  children,
+}: ExampleCardProps) => (
   <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-2xl">
     <h3 className="mb-2 text-3xl font-extrabold text-gray-900">{title}</h3>
     <p className="text-gray-600 mb-4 text-md">{description}</p>
-    
+
     <CodeBlock code={code} />
-    
+
     <div className="mt-8 pt-6 border-t border-gray-100">
-      <h4 className="text-xl font-semibold mb-4 text-gray-800">Rendered Workflow Graph:</h4>
+      <h4 className="text-xl font-semibold mb-4 text-gray-800">
+        Rendered Workflow Graph:
+      </h4>
       <div className="overflow-x-auto p-4 border border-gray-100 rounded-lg bg-gray-50/50">
         {children}
       </div>
@@ -104,11 +111,21 @@ const edges = [
     { id: "0", label: "Commit A", branch: "main", status: "completed" },
     { id: "1", label: "Initial Setup", status: "completed" },
     { id: "2", label: "Prep", status: "completed" },
-    { id: "3a", label: "Feature A Development", branch: "feature-A", status: "running" }, 
-    { id: "3b", label: "Hotfix B Implementation", branch: "feature-B", status: "failed" }, 
-    { id: "3c", label: "Feature A Continuation", status: "pending" }, 
-    { id: "4", label: "Merge to Main", branch: "main", status: "pending" }, 
-    { id: "5", label: "Final Deployment", status: "pending" }, 
+    {
+      id: "3a",
+      label: "Feature A Development",
+      branch: "feature-A",
+      status: "running",
+    },
+    {
+      id: "3b",
+      label: "Hotfix B Implementation",
+      branch: "feature-B",
+      status: "failed",
+    },
+    { id: "3c", label: "Feature A Continuation", status: "pending" },
+    { id: "4", label: "Merge to Main", branch: "main", status: "pending" },
+    { id: "5", label: "Final Deployment", status: "pending" },
   ];
   const edges2 = [
     { id: "e0-1", source: "0", target: "3a" },
@@ -147,10 +164,20 @@ const edges = [
   // Example 4: Multiple sources and sinks
   const nodes4 = [
     { id: "source1", label: "Data Ingestion (A)", status: "completed" },
-    { id: "source2", label: "API Trigger (B)", branch: "API-Stream", status: "completed" }, 
+    {
+      id: "source2",
+      label: "API Trigger (B)",
+      branch: "API-Stream",
+      status: "completed",
+    },
     { id: "process1", label: "Normalize A", status: "completed" },
     { id: "process2", label: "Validate B", status: "running" },
-    { id: "process3", label: "Final Transform", branch: "main", status: "pending" }, // MERGE NODE
+    {
+      id: "process3",
+      label: "Final Transform",
+      branch: "main",
+      status: "pending",
+    }, // MERGE NODE
     { id: "sink1", label: "Cache Result", status: "completed" },
     { id: "sink2", label: "Report Generation", status: "pending" },
   ];
@@ -181,14 +208,39 @@ const edges = [
 
   // Example 5: 3-lane parallel graph
   const nodes5 = [
-    { id: "start", label: "Initialize Systems", branch: "Base", status: "completed" },
-    { id: "a1", label: "Load User Data", branch: "User-Lane", status: "completed" },
+    {
+      id: "start",
+      label: "Initialize Systems",
+      branch: "Base",
+      status: "completed",
+    },
+    {
+      id: "a1",
+      label: "Load User Data",
+      branch: "User-Lane",
+      status: "completed",
+    },
     { id: "a2", label: "Encrypt User Data", status: "running" },
-    { id: "b1", label: "Fetch Assets", branch: "Asset-Lane", status: "completed" },
+    {
+      id: "b1",
+      label: "Fetch Assets",
+      branch: "Asset-Lane",
+      status: "completed",
+    },
     { id: "b2", label: "Optimize Images", status: "completed" },
-    { id: "c1", label: "Start Background Job", branch: "Job-Lane", status: "completed" },
+    {
+      id: "c1",
+      label: "Start Background Job",
+      branch: "Job-Lane",
+      status: "completed",
+    },
     { id: "c2", label: "Job Cleanup", status: "pending" },
-    { id: "end", label: "Final Synchronization", branch: "Base", status: "pending" }, // MERGE NODE
+    {
+      id: "end",
+      label: "Final Synchronization",
+      branch: "Base",
+      status: "pending",
+    }, // MERGE NODE
   ];
   const edges5 = [
     { id: "e5-s-a1", source: "start", target: "a1" },
@@ -234,7 +286,7 @@ const edges = [
     { id: "e6-y1-y2", source: "y1", target: "y2" },
     { id: "e6-y2-y3", source: "y2", target: "y3" },
   ];
-  
+
   const code6 = `
 const nodes = [
   { id: "x1", label: "Component X Start" },
@@ -250,7 +302,6 @@ const edges = [
 ];
   `;
 
-
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -258,12 +309,12 @@ const edges = [
           Workflow Graph Examples
         </h1>
         <p className="mt-2 text-xl text-gray-500">
-          Visualizing various Directed Acyclic Graph (DAG) structures using <code>dag-grid</code>.
+          Visualizing various Directed Acyclic Graph (DAG) structures using{" "}
+          <code>dag-grid</code>.
         </p>
       </header>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        
         {/* Example 1: Linear */}
         <ExampleCard
           title="1. Linear Workflow Graph"
@@ -333,7 +384,6 @@ const edges = [
             <GridGraph.Content />
           </GridGraph>
         </ExampleCard>
-
       </div>
     </div>
   );

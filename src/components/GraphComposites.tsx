@@ -1,6 +1,20 @@
 import React from "react";
-import { Node, Edge, LayoutData, ResolvedGraphConfig, GraphClassNames, GraphVisibility } from "../types";
-import { BranchDots, BranchNames, LaneLines, NodeBackgrounds, Edges, Nodes } from "./GraphPrimitives";
+import {
+  Node,
+  Edge,
+  LayoutData,
+  ResolvedGraphConfig,
+  GraphClassNames,
+  GraphVisibility,
+} from "../types";
+import {
+  BranchDots,
+  BranchNames,
+  LaneLines,
+  NodeBackgrounds,
+  Edges,
+  Nodes,
+} from "./GraphPrimitives";
 
 export const GraphHeader: React.FC<{
   branchLaneMap: Map<string, number>;
@@ -79,9 +93,18 @@ export const GraphContent: React.FC<{
   graphWidth,
   contentHeight,
 }) => (
-  <div className="gg__content" ref={containerRef} style={{ height: contentHeight }}>
+  <div
+    className="gg__content"
+    ref={containerRef}
+    style={{ height: contentHeight }}
+  >
     {visibility.showLaneLines && (
-      <LaneLines maxCol={layoutData.maxCol} config={config} className={classNames.laneLine} headerHeight={headerHeight} />
+      <LaneLines
+        maxCol={layoutData.maxCol}
+        config={config}
+        className={classNames.laneLine}
+        headerHeight={headerHeight}
+      />
     )}
 
     {visibility.showNodeBackgrounds && (

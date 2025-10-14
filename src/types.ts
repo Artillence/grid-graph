@@ -1,4 +1,3 @@
-
 export type Node = {
   id: string;
   label: string | React.ReactNode;
@@ -22,7 +21,9 @@ export type GraphConfig = {
   headerHeight?: string;
 };
 
-export type ResolvedGraphConfig = Required<Omit<GraphConfig, "headerHeight">> & {
+export type ResolvedGraphConfig = Required<
+  Omit<GraphConfig, "headerHeight">
+> & {
   headerHeight?: string;
 };
 
@@ -67,8 +68,6 @@ export type LayoutData = {
   nodeRenderIndex: Map<string, number>;
   error: string | null;
 };
-
-
 
 export type NodePosition = {
   x: number;

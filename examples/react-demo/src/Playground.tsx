@@ -37,11 +37,29 @@ const COLOR_PRESETS = {
   },
   sunset: {
     label: "Sunset", // warm tones
-    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"] as string[],
+    colors: [
+      "#EF476F",
+      "#F78C6B",
+      "#FFD166",
+      "#06D6A0",
+      "#118AB2",
+      "#073B4C",
+      "#F8961E",
+      "#F94144",
+    ] as string[],
   },
   forest: {
     label: "Forest", // greens and earthy hues
-    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"] as string[],
+    colors: [
+      "#2F5233",
+      "#4CAF50",
+      "#8BC34A",
+      "#CDDC39",
+      "#A5D6A7",
+      "#6D4C41",
+      "#8D6E63",
+      "#FFB74D",
+    ] as string[],
   },
 };
 
@@ -49,7 +67,7 @@ type ColorPreset = keyof typeof COLOR_PRESETS;
 
 export default function Playground() {
   const [branchOrder, setBranchOrder] = useState<string[]>([]);
-  
+
   // Visibility toggles
   const [showBranchDots, setShowBranchDots] = useState(true);
   const [showBranchNames, setShowBranchNames] = useState(true);
@@ -58,7 +76,7 @@ export default function Playground() {
   const [showNodeBackgrounds, setShowNodeBackgrounds] = useState(true);
   const [showNodeLabels, setShowNodeLabels] = useState(true);
   const [verticalLabels, setVerticalLabels] = useState(true);
-  
+
   // Config options
   const [rowHeight, setRowHeight] = useState(38);
   const [columnWidth, setColumnWidth] = useState(18);
@@ -69,13 +87,18 @@ export default function Playground() {
   const [colorPreset, setColorPreset] = useState<ColorPreset>("default");
 
   // JSON editor
-  const [nodesJson, setNodesJson] = useState(JSON.stringify(defaultNodes, null, 2));
-  const [edgesJson, setEdgesJson] = useState(JSON.stringify(defaultEdges, null, 2));
+  const [nodesJson, setNodesJson] = useState(
+    JSON.stringify(defaultNodes, null, 2),
+  );
+  const [edgesJson, setEdgesJson] = useState(
+    JSON.stringify(defaultEdges, null, 2),
+  );
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [nodes, setNodes] = useState(defaultNodes);
   const [edges, setEdges] = useState(defaultEdges);
 
-  const selectedPresetColors = colorPreset === "default" ? undefined : COLOR_PRESETS[colorPreset].colors;
+  const selectedPresetColors =
+    colorPreset === "default" ? undefined : COLOR_PRESETS[colorPreset].colors;
 
   const handleNodesChange = (value: string) => {
     setNodesJson(value);
@@ -102,10 +125,14 @@ export default function Playground() {
   return (
     <div className="h-screen bg-gray-50 overflow-hidden flex flex-col">
       <div className="flex-shrink-0 px-6 py-4 border-b border-gray-200 bg-white">
-        <h1 className="text-2xl font-bold text-gray-900">Grid-Graph Playground</h1>
-        <p className="text-sm text-gray-600">Experiment with different configurations and data</p>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Grid-Graph Playground
+        </h1>
+        <p className="text-sm text-gray-600">
+          Experiment with different configurations and data
+        </p>
       </div>
-      
+
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Graph Preview */}
         <div className="flex-1 p-6 overflow-auto">
@@ -133,7 +160,9 @@ export default function Playground() {
                   padding,
                   labelLeftMargin,
                   cornerRadius,
-                  ...(selectedPresetColors ? { colors: selectedPresetColors } : {}),
+                  ...(selectedPresetColors
+                    ? { colors: selectedPresetColors }
+                    : {}),
                 }}
                 visibility={{
                   showBranchDots,
@@ -156,7 +185,9 @@ export default function Playground() {
           <div className="p-6 space-y-6">
             {/* Visibility Options */}
             <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Visibility Options</h3>
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">
+                Visibility Options
+              </h3>
               <div className="space-y-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -226,7 +257,9 @@ export default function Playground() {
 
             {/* Layout Config */}
             <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Layout Configuration</h3>
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">
+                Layout Configuration
+              </h3>
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -311,44 +344,53 @@ export default function Playground() {
 
             {/* Color Presets */}
             <div className="border-b border-gray-200 pb-6">
-              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Branch Colors</h3>
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">
+                Branch Colors
+              </h3>
               <div className="space-y-3">
-                {(Object.entries(COLOR_PRESETS) as [ColorPreset, typeof COLOR_PRESETS[ColorPreset]][]).map(
-                  ([key, preset]) => (
-                    <label
-                      key={key}
-                      className="flex items-center justify-between gap-3 rounded border border-gray-200 px-3 py-2 hover:border-gray-300 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="colorPreset"
-                          value={key}
-                          checked={colorPreset === key}
-                          onChange={() => setColorPreset(key)}
-                          className="text-blue-600"
+                {(
+                  Object.entries(COLOR_PRESETS) as [
+                    ColorPreset,
+                    (typeof COLOR_PRESETS)[ColorPreset],
+                  ][]
+                ).map(([key, preset]) => (
+                  <label
+                    key={key}
+                    className="flex items-center justify-between gap-3 rounded border border-gray-200 px-3 py-2 hover:border-gray-300 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="colorPreset"
+                        value={key}
+                        checked={colorPreset === key}
+                        onChange={() => setColorPreset(key)}
+                        className="text-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {preset.label}
+                      </span>
+                    </div>
+                    <div className="flex gap-1">
+                      {(preset.colors ?? defaultColors).map((color) => (
+                        <span
+                          key={color}
+                          className="h-4 w-4 rounded-full border border-gray-200"
+                          style={{ backgroundColor: color }}
+                          aria-hidden
                         />
-                        <span className="text-sm text-gray-700">{preset.label}</span>
-                      </div>
-                      <div className="flex gap-1">
-                        {(preset.colors ?? defaultColors).map((color) => (
-                          <span
-                            key={color}
-                            className="h-4 w-4 rounded-full border border-gray-200"
-                            style={{ backgroundColor: color }}
-                            aria-hidden
-                          />
-                        ))}
-                      </div>
-                    </label>
-                  )
-                )}
+                      ))}
+                    </div>
+                  </label>
+                ))}
               </div>
             </div>
 
             {/* JSON Editor */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Data (JSON)</h3>
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">
+                Data (JSON)
+              </h3>
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -8,12 +8,18 @@ export function useGraphLayout(
   nodes: Node[],
   edges: Edge[],
   branchOrder?: string[],
-  colors: string[] = DEFAULT_CONFIG.colors
+  colors: string[] = DEFAULT_CONFIG.colors,
 ): LayoutData {
   return useMemo((): LayoutData => {
     try {
       const sortedIds = validateAndSort(nodes, edges);
-      const layout = calculateLayout(nodes, edges, sortedIds, colors, branchOrder);
+      const layout = calculateLayout(
+        nodes,
+        edges,
+        sortedIds,
+        colors,
+        branchOrder,
+      );
       return { ...layout, error: null };
     } catch (e: unknown) {
       console.error(e);

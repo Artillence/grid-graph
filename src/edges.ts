@@ -5,7 +5,7 @@ export function calculateEdgePath(
   source: NodePosition,
   target: NodePosition,
   cornerRadius: number,
-  isMergeEdge: boolean
+  isMergeEdge: boolean,
 ): string {
   const { x: x1, y: y1 } = source;
   const { x: x2, y: y2 } = target;
@@ -32,7 +32,7 @@ export function calculateEdgePath(
 
 export function getNodePosition(
   element: HTMLDivElement,
-  containerRect: DOMRect
+  containerRect: DOMRect,
 ): NodePosition {
   const rect = element.getBoundingClientRect();
   return {
@@ -51,7 +51,12 @@ export function calculateEdgePaths(
   cornerRadius: number,
   nodeColumnMap: Map<string, number>,
   nodeRenderIndex: Map<string, number>,
-  config: { rowHeight: number; columnWidth: number; nodeDiameter: number; padding: number }
+  config: {
+    rowHeight: number;
+    columnWidth: number;
+    nodeDiameter: number;
+    padding: number;
+  },
 ): EdgePath[] {
   if (!containerRect) return [];
 
@@ -69,20 +74,31 @@ export function calculateEdgePaths(
     const sourceRow = nodeRenderIndex.get(edge.source);
     const targetRow = nodeRenderIndex.get(edge.target);
 
-    if (sourceCol === undefined || targetCol === undefined || sourceRow === undefined || targetRow === undefined) {
+    if (
+      sourceCol === undefined ||
+      targetCol === undefined ||
+      sourceRow === undefined ||
+      targetRow === undefined
+    ) {
       throw new Error(
         `Edge calculation failed: Missing layout data for edge ${edge.id} (${edge.source} -> ${edge.target}). ` +
-        `Source: col=${sourceCol}, row=${sourceRow}. Target: col=${targetCol}, row=${targetRow}`
+          `Source: col=${sourceCol}, row=${sourceRow}. Target: col=${targetCol}, row=${targetRow}`,
       );
     }
 
     const source: NodePosition = {
-      x: sourceCol * config.columnWidth + config.padding / 2 + config.nodeDiameter / 2,
+      x:
+        sourceCol * config.columnWidth +
+        config.padding / 2 +
+        config.nodeDiameter / 2,
       y: sourceRow * config.rowHeight + config.rowHeight / 2,
     };
-    
+
     const target: NodePosition = {
-      x: targetCol * config.columnWidth + config.padding / 2 + config.nodeDiameter / 2,
+      x:
+        targetCol * config.columnWidth +
+        config.padding / 2 +
+        config.nodeDiameter / 2,
       y: targetRow * config.rowHeight + config.rowHeight / 2,
     };
 
