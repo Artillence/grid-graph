@@ -1,5 +1,4 @@
-
-export type GraphNode = {
+export type Node = {
   id: string;
   label: string | React.ReactNode;
   branch?: string;
@@ -22,7 +21,9 @@ export type GraphConfig = {
   headerHeight?: string;
 };
 
-export type ResolvedGraphConfig = Required<Omit<GraphConfig, "headerHeight">> & {
+export type ResolvedGraphConfig = Required<
+  Omit<GraphConfig, "headerHeight">
+> & {
   headerHeight?: string;
 };
 
@@ -31,7 +32,7 @@ export type GraphVisibility = {
   showBranchNames?: boolean;
   showLaneLines?: boolean;
   showEdges?: boolean;
-  showNodeBackgrounds?: boolean;
+  showRowBackgrounds?: boolean;
   showNodeLabels?: boolean;
 };
 
@@ -47,7 +48,7 @@ export type GraphClassNames = {
 };
 
 export type GraphProps = {
-  nodes: GraphNode[];
+  nodes: Node[];
   edges: Edge[];
   onSelect?: (id: string) => void;
   verticalLabels?: boolean;
@@ -67,8 +68,6 @@ export type LayoutData = {
   nodeRenderIndex: Map<string, number>;
   error: string | null;
 };
-
-
 
 export type NodePosition = {
   x: number;

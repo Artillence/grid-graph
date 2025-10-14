@@ -1,18 +1,20 @@
-import { GraphNode } from "./types";
+import { Node } from "./types";
 
 export function detectCycles(
-  nodes: GraphNode[],
+  nodes: Node[],
   childMap: Map<string, string[]>,
-  inDegree: Map<string, number>
+  inDegree: Map<string, number>,
 ): boolean {
   const tempInDegree = new Map(inDegree);
-  const queue = nodes.map((n) => n.id).filter((id) => tempInDegree.get(id) === 0);
+  const queue = nodes
+    .map((n) => n.id)
+    .filter((id) => tempInDegree.get(id) === 0);
   const visited = [];
 
   while (queue.length > 0) {
     const nodeId = queue.shift()!;
     visited.push(nodeId);
-    
+
     for (const childId of childMap.get(nodeId) || []) {
       tempInDegree.set(childId, tempInDegree.get(childId)! - 1);
       if (tempInDegree.get(childId) === 0) {
@@ -25,9 +27,9 @@ export function detectCycles(
 }
 
 export function topologicalSort(
-  nodes: GraphNode[],
+  nodes: Node[],
   childMap: Map<string, string[]>,
-  inDegree: Map<string, number>
+  inDegree: Map<string, number>,
 ): string[] {
   const result: string[] = [];
   const visited = new Set<string>();
