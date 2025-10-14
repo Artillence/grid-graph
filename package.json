@@ -20,7 +20,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts && cp src/styles.css dist/styles.css"
+    "build": "tsup && cp src/styles.css dist/styles.css"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",
