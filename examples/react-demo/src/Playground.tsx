@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DagGrid } from "dag-grid";
+import { GridGraph } from "grid-graph";
 
 const defaultNodes = [
   { id: "1", label: "Start", branch: "main" },
@@ -119,7 +119,7 @@ export default function Playground() {
               )}
             </div>
             <div className="border border-gray-200 rounded p-4 bg-gray-50 overflow-auto">
-              <DagGrid
+              <GridGraph
                 key={`${rowHeight}-${columnWidth}-${nodeDiameter}-${padding}-${labelLeftMargin}-${cornerRadius}-${colorPreset}`}
                 nodes={nodes}
                 edges={edges}
@@ -144,9 +144,9 @@ export default function Playground() {
                   showNodeLabels,
                 }}
               >
-                <DagGrid.Header />
-                <DagGrid.Content />
-              </DagGrid>
+                <GridGraph.Header />
+                <GridGraph.Content />
+              </GridGraph>
             </div>
           </div>
         </div>

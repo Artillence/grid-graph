@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { DagGrid } from "dag-grid";
+import { GridGraph } from "grid-graph";
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'; 
@@ -93,10 +93,10 @@ const edges = [
   { id: "e1-3", source: "3", target: "4" },
 ];
 
-<DagGrid nodes={nodes} edges={edges}>
-  <DagGrid.Header />
-  <DagGrid.Content />
-</DagGrid>
+<GridGraph nodes={nodes} edges={edges}>
+  <GridGraph.Header />
+  <GridGraph.Content />
+</GridGraph>
   `;
 
   // Example 2: Graph with explicit, Git-like branch declarations
@@ -138,10 +138,10 @@ const edges = [
   { source: "3c", target: "4" },
 ];
 
-// Note: dag-grid supports drag-and-drop reordering using branchOrder/onReorderBranches
-<DagGrid branchOrder={branchOrder} onReorderBranches={setBranchOrder}>
+// Note: grid-graph supports drag-and-drop reordering using branchOrder/onReorderBranches
+<GridGraph branchOrder={branchOrder} onReorderBranches={setBranchOrder}>
   {/* ... */}
-</DagGrid>
+</GridGraph>
   `;
 
   // Example 4: Multiple sources and sinks
@@ -270,15 +270,15 @@ const edges = [
           description="A basic sequential pipeline where nodes are connected one after the other. Demonstrates simple dependency tracking."
           code={code1}
         >
-          <DagGrid
+          <GridGraph
             nodes={nodes1}
             edges={edges1}
             branchOrder={branchOrder1}
             onReorderBranches={setBranchOrder1}
           >
-            <DagGrid.Header />
-            <DagGrid.Content />
-          </DagGrid>
+            <GridGraph.Header />
+            <GridGraph.Content />
+          </GridGraph>
         </ExampleCard>
 
         {/* Example 2: Git-like Branching */}
@@ -287,15 +287,15 @@ const edges = [
           description="Illustrates complex divergence and convergence. Nodes declare their associated branch, allowing drag-and-drop reordering of parallel branches."
           code={code2}
         >
-          <DagGrid
+          <GridGraph
             nodes={nodes2}
             edges={edges2}
             branchOrder={branchOrder2}
             onReorderBranches={setBranchOrder2}
           >
-            <DagGrid.Header />
-            <DagGrid.Content />
-          </DagGrid>
+            <GridGraph.Header />
+            <GridGraph.Content />
+          </GridGraph>
         </ExampleCard>
 
         {/* Example 4: Multiple Sources/Sinks */}
@@ -304,10 +304,10 @@ const edges = [
           description="A graph starting from two independent sources, merging into a central process, and then splitting again into two distinct sinks."
           code={code4}
         >
-          <DagGrid nodes={nodes4} edges={edges4}>
-            <DagGrid.Header />
-            <DagGrid.Content />
-          </DagGrid>
+          <GridGraph nodes={nodes4} edges={edges4}>
+            <GridGraph.Header />
+            <GridGraph.Content />
+          </GridGraph>
         </ExampleCard>
 
         {/* Example 5: 3-Lane Parallel Graph */}
@@ -316,10 +316,10 @@ const edges = [
           description="Demonstrates parallel workstreams originating from a single node and converging into a final synchronization step."
           code={code5}
         >
-          <DagGrid nodes={nodes5} edges={edges5}>
-            <DagGrid.Header />
-            <DagGrid.Content />
-          </DagGrid>
+          <GridGraph nodes={nodes5} edges={edges5}>
+            <GridGraph.Header />
+            <GridGraph.Content />
+          </GridGraph>
         </ExampleCard>
 
         {/* Example 6: Disconnected graph */}
@@ -328,10 +328,10 @@ const edges = [
           description="Shows how the layout engine handles graphs composed of two or more completely independent sub-graphs."
           code={code6}
         >
-          <DagGrid nodes={nodes6} edges={edges6}>
-            <DagGrid.Header />
-            <DagGrid.Content />
-          </DagGrid>
+          <GridGraph nodes={nodes6} edges={edges6}>
+            <GridGraph.Header />
+            <GridGraph.Content />
+          </GridGraph>
         </ExampleCard>
 
       </div>

@@ -1,8 +1,8 @@
-import { Edge, GraphNode, LayoutData } from "./types";
+import { Edge, Node, LayoutData } from "./types";
 
 
 
-export function buildGraphMaps(nodes: GraphNode[], edges: Edge[]) {
+export function buildGraphMaps(nodes: Node[], edges: Edge[]) {
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   const parentMap = new Map<string, string[]>();
   const childMap = new Map<string, string[]>();
@@ -25,7 +25,7 @@ export function buildGraphMaps(nodes: GraphNode[], edges: Edge[]) {
 
 export function assignBranches(
   sortedNodeIds: string[],
-  nodeMap: Map<string, GraphNode>,
+  nodeMap: Map<string, Node>,
   parentMap: Map<string, string[]>
 ): Map<string, string> {
   const nodeBranchMap = new Map<string, string>();
@@ -105,7 +105,7 @@ function applyBranchOrder(
 }
 
 export function calculateLayout(
-  nodes: GraphNode[],
+  nodes: Node[],
   edges: Edge[],
   sortedNodeIds: string[],
   colors : string[], 

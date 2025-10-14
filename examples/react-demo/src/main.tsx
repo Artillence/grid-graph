@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import 'dag-grid/styles.css'
+import 'grid-graph/styles.css'
 import './App.css'
 import App from './App.tsx'
 

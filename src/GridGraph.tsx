@@ -8,7 +8,7 @@ import { buildGraphMaps } from "./layout";
 import { GraphHeader, GraphContent } from "./components";
 
 
-type DagGridContextValue = {
+type GridGraphContextValue = {
   layoutData: LayoutData;
   edgePaths: { id: string; path: string; color: string }[];
   selected: string | null;
@@ -30,22 +30,22 @@ type DagGridContextValue = {
   edges: GraphProps["edges"];
 };
 
-const DagGridContext = React.createContext<DagGridContextValue | null>(null);
+const GridGraphContext = React.createContext<GridGraphContextValue | null>(null);
 
-const useDagGridContext = () => {
-  const context = React.useContext(DagGridContext);
+const useGridGraphContext = () => {
+  const context = React.useContext(GridGraphContext);
   if (!context) {
-    throw new Error("DagGrid compound components must be used within DagGrid");
+    throw new Error("GridGraph compound components must be used within GridGraph");
   }
   return context;
 };
 
 
-type DagGridProps = GraphProps & {
+type GridGraphProps = GraphProps & {
   children?: React.ReactNode;
 };
 
-const DagGridRoot: React.FC<DagGridProps> = ({
+const GridGraphRoot: React.FC<GridGraphProps> = ({
   nodes,
   edges,
   onSelect,
@@ -101,8 +101,8 @@ const DagGridRoot: React.FC<DagGridProps> = ({
 
   if (layoutData.error) {
     return (
-      <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">
-        <h3 className="font-bold">Graph Layout Error</h3>
+      <div className="gg__error">
+        <h3 className="gg__error-title">Graph Layout Error</h3>
         <p>{layoutData.error}</p>
       </div>
     );
@@ -125,7 +125,7 @@ const DagGridRoot: React.FC<DagGridProps> = ({
     onSelect?.(id);
   };
 
-  const contextValue: DagGridContextValue = {
+  const contextValue: GridGraphContextValue = {
     layoutData,
     edgePaths,
     selected,
@@ -148,7 +148,7 @@ const DagGridRoot: React.FC<DagGridProps> = ({
   };
 
   return (
-    <DagGridContext.Provider value={contextValue}>
+    <GridGraphContext.Provider value={contextValue}>
       <div
         className={classNames.container}
         style={{
@@ -158,14 +158,14 @@ const DagGridRoot: React.FC<DagGridProps> = ({
       >
         {children}
       </div>
-    </DagGridContext.Provider>
+    </GridGraphContext.Provider>
   );
 };
 
 
 const Header: React.FC = () => {
   const { layoutData, config, classNames, headerHeight, verticalLabels, visibility, onReorderBranches } =
-    useDagGridContext();
+    useGridGraphContext();
 
   const showBranchDots = visibility.showBranchDots;
   const showBranchNames = visibility.showBranchNames;
@@ -206,7 +206,7 @@ const Body: React.FC = () => {
     headerHeight,
     graphWidth,
     contentHeight,
-  } = useDagGridContext();
+  } = useGridGraphContext();
 
   return (
     <GraphContent
@@ -232,7 +232,7 @@ const Body: React.FC = () => {
 };
 
 
-export const DagGrid = Object.assign(DagGridRoot, {
+export const GridGraph = Object.assign(GridGraphRoot, {
   Header: Header,
   Content: Body,
 });

@@ -1,7 +1,7 @@
-import { GraphNode } from "./types";
+import { Node } from "./types";
 
 export function detectCycles(
-  nodes: GraphNode[],
+  nodes: Node[],
   childMap: Map<string, string[]>,
   inDegree: Map<string, number>
 ): boolean {
@@ -25,7 +25,7 @@ export function detectCycles(
 }
 
 export function topologicalSort(
-  nodes: GraphNode[],
+  nodes: Node[],
   childMap: Map<string, string[]>,
   inDegree: Map<string, number>
 ): string[] {

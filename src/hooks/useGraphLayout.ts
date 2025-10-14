@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { GraphNode, Edge, LayoutData } from "../types";
+import { Node, Edge, LayoutData } from "../types";
 import { validateAndSort } from "../validation";
 import { calculateLayout } from "../layout";
 import { DEFAULT_CONFIG } from "../constants";
 
 export function useGraphLayout(
-  nodes: GraphNode[],
+  nodes: Node[],
   edges: Edge[],
   branchOrder?: string[],
   colors: string[] = DEFAULT_CONFIG.colors

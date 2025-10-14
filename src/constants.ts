@@ -35,12 +35,12 @@ export const DEFAULT_VISIBILITY: Required<GraphVisibility> = {
 };
 
 export const DEFAULT_CLASSNAMES: Required<GraphClassNames> = {
-  container: "relative font-sans",
-  nodeLabel: "text-sm",
-  nodeLabelSelected: "font-semibold",
-  nodeBackground: "pointer-events-none rounded-md transition-all duration-150",
-  nodeBackgroundSelected: "bg-blue-100",
-  nodeBackgroundHovered: "bg-gray-100",
-  branchLabel: "absolute rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600 transition-all duration-300",
-  laneLine: "absolute top-0 bottom-0 border-l-2 border-dashed border-slate-200 transition-all duration-300",
+  container: "gg__container",
+  nodeLabel: "gg__node-label",
+  nodeLabelSelected: "gg__node-label-selected",
+  nodeBackground: "gg__node-background",
+  nodeBackgroundSelected: "gg__node-background-selected",
+  nodeBackgroundHovered: "gg__node-background-hovered",
+  branchLabel: "gg__branch-label",
+  laneLine: "gg__lane-line",
 };

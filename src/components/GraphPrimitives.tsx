@@ -1,5 +1,5 @@
 import React from "react";
-import { GraphNode, GraphClassNames, ResolvedGraphConfig } from "../types";
+import { Node, GraphClassNames, ResolvedGraphConfig } from "../types";
 import { getLaneXPosition } from "../utils";
 import { useBranchDrag } from "../hooks";
 
@@ -16,7 +16,7 @@ export const BranchDots: React.FC<{
   );
 
   return (
-    <div className="absolute inset-0 z-20">
+    <div className="gg__absolute gg__inset-0 gg__z-20">
       {Array.from(branchLaneMap.entries()).map(([branchName, colIndex]) => {
         const xPos = getLaneXPosition(colIndex, config);
         const color = branchColorMap.get(branchName) ?? "#ccc";
@@ -26,15 +26,11 @@ export const BranchDots: React.FC<{
         return (
           <div
             key={`dot-${branchName}`}
-            className="absolute top-0 h-3 w-3 rounded-full transition-all duration-200"
+            className={`gg__branch-dot ${isDragging ? 'gg__branch-dot-dragging' : ''} ${isHoverTarget ? 'gg__branch-dot-hover' : ''} ${onReorderBranches ? 'gg__branch-dot-draggable' : 'gg__branch-dot-static'}`}
             style={{
               left: xPos,
               transform: `translateX(-50%) ${isDragging ? "scale(1.3)" : "scale(1)"}`,
               backgroundColor: color,
-              opacity: isDragging ? 0.7 : 1,
-              cursor: onReorderBranches ? "grab" : "default",
-              pointerEvents: onReorderBranches ? "auto" : "none",
-              boxShadow: isHoverTarget ? "0 0 0 3px rgba(59, 130, 246, 0.5)" : "none",
             }}
             onMouseDown={(e) => handleMouseDown(branchName, e)}
           />
@@ -50,7 +46,7 @@ export const BranchNames: React.FC<{
   config: ResolvedGraphConfig;
   className: string;
 }> = ({ branchLaneMap, verticalLabels, config, className }) => (
-  <div className="pointer-events-none absolute top-4 right-0 left-0 z-20">
+  <div className="gg__branch-labels">
     {Array.from(branchLaneMap.entries()).map(([branchName, colIndex]) => {
       const xPos = getLaneXPosition(colIndex, config);
 
@@ -92,7 +88,7 @@ export const LaneLines: React.FC<{
   className: string;
   headerHeight: string;
 }> = ({ maxCol, config, className, headerHeight }) => (
-  <div className="pointer-events-none absolute z-[1]" style={{ top: `-${headerHeight || 0}`, bottom: 0 }}>
+  <div className="gg__lane-lines-container" style={{ top: `-${headerHeight || 0}`, bottom: 0 }}>
     {Array.from({ length: maxCol + 1 }).map((_, colIndex) => {
       const xPos = getLaneXPosition(colIndex, config);
       return <div key={`lane-${colIndex}`} className={className} style={{ left: xPos - 1 }} />;
@@ -107,7 +103,7 @@ export const NodeBackgrounds: React.FC<{
   rowHeight: number;
   classNames: Required<GraphClassNames>;
 }> = ({ nodeRenderIndex, selected, hovered, rowHeight, classNames }) => (
-  <div className="relative z-0">
+  <div className="gg__node-backgrounds">
     {Array.from(nodeRenderIndex.entries()).map(([nodeId, index]) => (
       <div
         key={`bg-${nodeId}`}
@@ -133,15 +129,15 @@ export const NodeBackgrounds: React.FC<{
 export const Edges: React.FC<{
   edgePaths: { id: string; path: string; color: string }[];
 }> = ({ edgePaths }) => (
-  <svg className="pointer-events-none absolute top-0 left-0 z-10 h-full w-full">
+  <svg className="gg__edges">
     {edgePaths.map((edge) => (
       <path
         key={edge.id}
+        className="gg__edge-path"
         d={edge.path}
         stroke={edge.color}
         strokeWidth={2.5}
         fill="none"
-        style={{ transition: "d 0.3s ease-in-out" }}
       />
     ))}
   </svg>
@@ -160,7 +156,7 @@ export const NodeCircle: React.FC<{
       if (el) nodeRefs.current.set(nodeId, el);
       else nodeRefs.current.delete(nodeId);
     }}
-    className="relative rounded-full transition-all duration-300"
+    className="gg__node-circle"
     style={{
       width: config.nodeDiameter,
       height: config.nodeDiameter,
@@ -169,12 +165,12 @@ export const NodeCircle: React.FC<{
       transform: isHovered ? "scale(1.15)" : "scale(1)",
     }}
   >
-    <div className="absolute inset-[3px] rounded-full" style={{ backgroundColor: "white" }} />
+    <div className="gg__node-circle-inner" />
   </div>
 );
 
 export const Nodes: React.FC<{
-  nodes: GraphNode[];
+  nodes: Node[];
   nodeColumnMap: Map<string, number>;
   nodeBranchMap: Map<string, string>;
   branchColorMap: Map<string, string>;
@@ -206,7 +202,7 @@ export const Nodes: React.FC<{
   graphWidth,
   showNodeLabels,
 }) => (
-  <div className="relative z-20">
+  <div className="gg__nodes">
     {nodes.map((node) => {
       const col = nodeColumnMap.get(node.id) ?? 0;
       const branch = nodeBranchMap.get(node.id);
@@ -218,13 +214,13 @@ export const Nodes: React.FC<{
       return (
         <div
           key={node.id}
+          className="gg__node"
           onClick={() => onNodeClick(node.id)}
           onMouseEnter={() => onMouseEnter(node.id)}
           onMouseLeave={onMouseLeave}
-          style={{ height: config.rowHeight, position: "absolute", top, width: "100%" }}
-          className="flex cursor-pointer items-center"
+          style={{ height: config.rowHeight, top }}
         >
-          <div className="flex-shrink-0" style={{ width: graphWidth }}>
+          <div className="gg__node-circle-wrapper" style={{ width: graphWidth }}>
             <NodeCircle
               nodeId={node.id}
               color={color}

@@ -1,5 +1,5 @@
 
-export type GraphNode = {
+export type Node = {
   id: string;
   label: string | React.ReactNode;
   branch?: string;
@@ -47,7 +47,7 @@ export type GraphClassNames = {
 };
 
 export type GraphProps = {
-  nodes: GraphNode[];
+  nodes: Node[];
   edges: Edge[];
   onSelect?: (id: string) => void;
   verticalLabels?: boolean;

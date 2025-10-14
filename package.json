@@ -1,7 +1,7 @@
 {
-  "name": "dag-grid",
+  "name": "grid-graph",
   "version": "1.0.0",
-  "description": "dag-grid is a minimalist React component for rendering Directed Acyclic Graphs (DAGs) in a clean, readable grid layout. Inspired by VSCode git graph.",
+  "description": "grid-graph is a minimalist React component for rendering Directed Acyclic Graphs (DAGs) in a clean, readable grid layout. Inspired by VSCode git graph.",
   "license": "MIT",
   "author": "Gábor Pallos",
   "type": "commonjs",
@@ -20,22 +20,16 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts && postcss src/styles.css -o dist/styles.css --no-map"
+    "build": "tsup src/index.ts --format esm,cjs --dts && cp src/styles.css dist/styles.css"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.14",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
-    "postcss": "^8.5.6",
-    "postcss-cli": "^11.0.1",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "react": ">=17",
     "react-dom": ">=17"
-  },
-  "dependencies": {
-    "tailwindcss": "^4.1.14"
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { GraphNode, Edge, LayoutData, ResolvedGraphConfig, GraphClassNames, GraphVisibility } from "../types";
+import { Node, Edge, LayoutData, ResolvedGraphConfig, GraphClassNames, GraphVisibility } from "../types";
 import { BranchDots, BranchNames, LaneLines, NodeBackgrounds, Edges, Nodes } from "./GraphPrimitives";
 
 export const GraphHeader: React.FC<{
@@ -23,7 +23,7 @@ export const GraphHeader: React.FC<{
   showBranchNames,
   onReorderBranches,
 }) => (
-  <div className="relative w-full" style={{ height: headerHeight }}>
+  <div className="gg__header" style={{ height: headerHeight }}>
     {showBranchDots && (
       <BranchDots
         branchLaneMap={branchLaneMap}
@@ -44,7 +44,7 @@ export const GraphHeader: React.FC<{
 );
 
 export const GraphContent: React.FC<{
-  nodes: GraphNode[];
+  nodes: Node[];
   edges: Edge[];
   layoutData: Omit<LayoutData, "error">;
   edgePaths: { id: string; path: string; color: string }[];
@@ -79,7 +79,7 @@ export const GraphContent: React.FC<{
   graphWidth,
   contentHeight,
 }) => (
-  <div className="relative" ref={containerRef} style={{ height: contentHeight }}>
+  <div className="gg__content" ref={containerRef} style={{ height: contentHeight }}>
     {visibility.showLaneLines && (
       <LaneLines maxCol={layoutData.maxCol} config={config} className={classNames.laneLine} headerHeight={headerHeight} />
     )}

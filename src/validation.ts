@@ -1,9 +1,9 @@
-import { GraphNode, Edge } from "./types";
+import { Node, Edge } from "./types";
 import { buildGraphMaps } from "./layout";
 import { detectCycles, topologicalSort } from "./algorithm";
 
 export function validateGraph(
-  nodeMap: Map<string, GraphNode>,
+  nodeMap: Map<string, Node>,
   parentMap: Map<string, string[]>,
   childMap: Map<string, string[]>
 ): void {
@@ -33,7 +33,7 @@ export function validateGraph(
   }
 }
 
-export function validateAndSort(nodes: GraphNode[], edges: Edge[]): string[] {
+export function validateAndSort(nodes: Node[], edges: Edge[]): string[] {
   if (nodes.length === 0) return [];
 
   const { nodeMap, parentMap, childMap, inDegree } = buildGraphMaps(nodes, edges);

@@ -1,11 +1,11 @@
 import { useLayoutEffect, useState, useRef } from "react";
-import { Edge, GraphNode, LayoutData } from "../types";
+import { Edge, Node, LayoutData } from "../types";
 import { EdgePath } from "../constants";
 import { calculateEdgePaths } from "../edges";
 
 export function useEdgePaths(
   edges: Edge[],
-  nodes: GraphNode[],
+  nodes: Node[],
   nodeRefs: Map<string, HTMLDivElement>,
   containerRef: React.RefObject<HTMLDivElement | null>,
   layoutData: LayoutData,
