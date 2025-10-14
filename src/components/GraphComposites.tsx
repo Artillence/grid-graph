@@ -107,7 +107,7 @@ export const GraphContent: React.FC<{
       />
     )}
 
-    {visibility.showNodeBackgrounds && (
+    {visibility.showRowBackgrounds && (
       <NodeBackgrounds
         nodeRenderIndex={layoutData.nodeRenderIndex}
         selected={selected}

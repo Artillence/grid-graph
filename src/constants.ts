@@ -30,7 +30,7 @@ export const DEFAULT_VISIBILITY: Required<GraphVisibility> = {
   showBranchNames: true,
   showLaneLines: true,
   showEdges: true,
-  showNodeBackgrounds: true,
+  showRowBackgrounds: true,
   showNodeLabels: true,
 };
 

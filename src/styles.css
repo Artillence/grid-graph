@@ -12,11 +12,11 @@
 
 .gg__branch-label {
   position: absolute;
-  border-radius: 9999px;
+  border-radius: 9px;
   background-color: rgb(241 245 249);
-  padding: 0.125rem 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  padding: 0.125rem 0.3rem;
+  font-size: 0.55rem;
+  line-height: 0.2rem;
   color: rgb(71 85 105);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

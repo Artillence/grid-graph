@@ -32,7 +32,7 @@ export type GraphVisibility = {
   showBranchNames?: boolean;
   showLaneLines?: boolean;
   showEdges?: boolean;
-  showNodeBackgrounds?: boolean;
+  showRowBackgrounds?: boolean;
   showNodeLabels?: boolean;
 };
 
