@@ -30,21 +30,8 @@ export function calculateEdgePath(
   }
 }
 
-export function getNodePosition(
-  element: HTMLDivElement,
-  containerRect: DOMRect,
-): NodePosition {
-  const rect = element.getBoundingClientRect();
-  return {
-    x: rect.left - containerRect.left + rect.width / 2,
-    y: rect.top - containerRect.top + rect.height / 2,
-  };
-}
-
 export function calculateEdgePaths(
   edges: Edge[],
-  nodeRefs: Map<string, HTMLDivElement>,
-  containerRect: DOMRect | undefined,
   nodeBranchMap: Map<string, string>,
   branchColorMap: Map<string, string>,
   parentMap: Map<string, string[]>,
@@ -58,17 +45,8 @@ export function calculateEdgePaths(
     padding: number;
   },
 ): EdgePath[] {
-  if (!containerRect) return [];
-
   return edges.map((edge) => {
-    const sourceEl = nodeRefs.get(edge.source);
-    const targetEl = nodeRefs.get(edge.target);
-
-    if (!sourceEl || !targetEl) {
-      return { id: edge.id, path: "", color: "#ccc" };
-    }
-
-    // Calculate positions from layout data, not DOM positions
+    // Calculate positions from layout data
     const sourceCol = nodeColumnMap.get(edge.source);
     const targetCol = nodeColumnMap.get(edge.target);
     const sourceRow = nodeRenderIndex.get(edge.source);

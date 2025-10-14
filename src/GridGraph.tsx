@@ -85,16 +85,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   );
 
   const { parentMap } = buildGraphMaps(nodes, edges);
-  const edgePaths = useEdgePaths(
-    edges,
-    nodes,
-    nodeRefs.current,
-    containerRef,
-    layoutData,
-    parentMap,
-    config.cornerRadius,
-    config,
-  );
+  const edgePaths = useEdgePaths(edges, nodes, layoutData, parentMap, config);
 
   if (layoutData.error) {
     throw new Error(`Graph Layout Error: ${layoutData.error}`);
