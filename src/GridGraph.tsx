@@ -59,7 +59,6 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
 }) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [edgeUpdateTrigger, setEdgeUpdateTrigger] = useState(0);
 
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,14 +78,6 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     config.colors ?? DEFAULT_CONFIG.colors
   );
 
-  // Trigger edge recalculation after branch order changes
-  useLayoutEffect(() => {
-    if (branchOrder_ && branchOrder_.length > 0) {
-      const timer = setTimeout(() => setEdgeUpdateTrigger((prev) => prev + 1), 320);
-      return () => clearTimeout(timer);
-    }
-  }, [branchOrder_]);
-
   const { parentMap } = buildGraphMaps(nodes, edges);
   const edgePaths = useEdgePaths(
     edges,
@@ -96,16 +87,12 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     layoutData,
     parentMap,
     config.cornerRadius,
-    edgeUpdateTrigger
+    config,
+    0
   );
 
   if (layoutData.error) {
-    return (
-      <div className="gg__error">
-        <h3 className="gg__error-title">Graph Layout Error</h3>
-        <p>{layoutData.error}</p>
-      </div>
-    );
+    throw new Error(`Graph Layout Error: ${layoutData.error}`);
   }
 
   const graphWidth = (layoutData.maxCol + 1) * config.columnWidth + config.padding;

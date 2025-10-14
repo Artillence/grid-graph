@@ -48,7 +48,10 @@ export function calculateEdgePaths(
   nodeBranchMap: Map<string, string>,
   branchColorMap: Map<string, string>,
   parentMap: Map<string, string[]>,
-  cornerRadius: number
+  cornerRadius: number,
+  nodeColumnMap: Map<string, number>,
+  nodeRenderIndex: Map<string, number>,
+  config: { rowHeight: number; columnWidth: number; nodeDiameter: number; padding: number }
 ): EdgePath[] {
   if (!containerRect) return [];
 
@@ -60,8 +63,29 @@ export function calculateEdgePaths(
       return { id: edge.id, path: "", color: "#ccc" };
     }
 
-    const source = getNodePosition(sourceEl, containerRect);
-    const target = getNodePosition(targetEl, containerRect);
+    // Calculate positions from layout data, not DOM positions
+    const sourceCol = nodeColumnMap.get(edge.source);
+    const targetCol = nodeColumnMap.get(edge.target);
+    const sourceRow = nodeRenderIndex.get(edge.source);
+    const targetRow = nodeRenderIndex.get(edge.target);
+
+    if (sourceCol === undefined || targetCol === undefined || sourceRow === undefined || targetRow === undefined) {
+      throw new Error(
+        `Edge calculation failed: Missing layout data for edge ${edge.id} (${edge.source} -> ${edge.target}). ` +
+        `Source: col=${sourceCol}, row=${sourceRow}. Target: col=${targetCol}, row=${targetRow}`
+      );
+    }
+
+    const source: NodePosition = {
+      x: sourceCol * config.columnWidth + config.padding / 2 + config.nodeDiameter / 2,
+      y: sourceRow * config.rowHeight + config.rowHeight / 2,
+    };
+    
+    const target: NodePosition = {
+      x: targetCol * config.columnWidth + config.padding / 2 + config.nodeDiameter / 2,
+      y: targetRow * config.rowHeight + config.rowHeight / 2,
+    };
+
     const isMergeEdge = (parentMap.get(edge.target) || []).length > 1;
     const path = calculateEdgePath(source, target, cornerRadius, isMergeEdge);
 

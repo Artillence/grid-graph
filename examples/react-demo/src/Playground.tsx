@@ -37,13 +37,13 @@ const COLOR_PRESETS = {
   },
   sunset: {
     label: "Sunset", // warm tones
-    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"],
+    colors: ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C", "#F8961E", "#F94144"] as string[],
   },
   forest: {
     label: "Forest", // greens and earthy hues
-    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"],
+    colors: ["#2F5233", "#4CAF50", "#8BC34A", "#CDDC39", "#A5D6A7", "#6D4C41", "#8D6E63", "#FFB74D"] as string[],
   },
-} as const;
+};
 
 type ColorPreset = keyof typeof COLOR_PRESETS;
 
@@ -102,7 +102,7 @@ export default function Playground() {
   return (
     <div className="h-screen bg-gray-50 overflow-hidden flex flex-col">
       <div className="flex-shrink-0 px-6 py-4 border-b border-gray-200 bg-white">
-        <h1 className="text-2xl font-bold text-gray-900">DAG Grid Playground</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Grid-Graph Playground</h1>
         <p className="text-sm text-gray-600">Experiment with different configurations and data</p>
       </div>
       

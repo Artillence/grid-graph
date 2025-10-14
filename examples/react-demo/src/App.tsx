@@ -12,7 +12,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">DAG Grid</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Grid-Graph</h1>
               <p className="text-sm text-gray-600">Interactive graph visualization component</p>
             </div>
             <div className="flex gap-2">

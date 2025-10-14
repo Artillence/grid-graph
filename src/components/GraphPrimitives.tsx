@@ -29,7 +29,7 @@ export const BranchDots: React.FC<{
             className={`gg__branch-dot ${isDragging ? 'gg__branch-dot-dragging' : ''} ${isHoverTarget ? 'gg__branch-dot-hover' : ''} ${onReorderBranches ? 'gg__branch-dot-draggable' : 'gg__branch-dot-static'}`}
             style={{
               left: xPos,
-              transform: `translateX(-50%) ${isDragging ? "scale(1.3)" : "scale(1)"}`,
+              transform: 'translateX(-50%)',
               backgroundColor: color,
             }}
             onMouseDown={(e) => handleMouseDown(branchName, e)}
@@ -177,7 +177,7 @@ export const Nodes: React.FC<{
   nodeRenderIndex: Map<string, number>;
   selected: string | null;
   hovered: string | null;
-  nodeRefs: React.MutableRefObject<Map<string, HTMLDivElement>>;
+  nodeRefs: React.RefObject<Map<string, HTMLDivElement>>;
   onNodeClick: (id: string) => void;
   onMouseEnter: (id: string) => void;
   onMouseLeave: () => void;
