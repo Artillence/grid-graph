@@ -170,6 +170,33 @@ export default function ExamplesPage() {
         { id: 'e10', source: 'a', target: 'h' },
       ],
     },
+    {
+      title: 'AI Training Pipeline',
+      description: 'An AI model training workflow with parallel data processing and model comparison.',
+      nodes: [
+        { id: 'collect', label: 'Collect Data' },
+        { id: 'preprocess', label: 'Preprocess' },
+        { id: 'feature-a', label: 'Feature Set A' },
+        { id: 'feature-b', label: 'Feature Set B', branch: 'alt-features' },
+        { id: 'train-rf', label: 'Train Random Forest' },
+        { id: 'train-nn', label: 'Train Neural Net' },
+        { id: 'evaluate', label: 'Evaluate Models', branch: 'main' },
+        { id: 'select', label: 'Select Best' },
+        { id: 'deploy', label: 'Deploy' },
+      ],
+      edges: [
+        { id: 'e1', source: 'collect', target: 'preprocess' },
+        { id: 'e2', source: 'preprocess', target: 'feature-a' },
+        { id: 'e3', source: 'preprocess', target: 'feature-b' },
+        { id: 'e4', source: 'feature-a', target: 'train-rf' },
+        { id: 'e5', source: 'feature-b', target: 'train-nn' },
+        { id: 'e6', source: 'train-rf', target: 'evaluate' },
+        { id: 'e7', source: 'train-nn', target: 'evaluate' },
+        { id: 'e8', source: 'evaluate', target: 'select' },
+        { id: 'e9', source: 'select', target: 'deploy' },
+      ],
+      showBranchLabels: false,
+    },
   ];
 
   return (
