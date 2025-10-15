@@ -1,5 +1,7 @@
 import { Box, Typography, Paper, Grid } from '@mui/material';
 import { GridGraph } from 'grid-graph';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface GraphCardProps {
   title: string;
@@ -9,8 +11,17 @@ interface GraphCardProps {
 }
 
 function GraphCard({ title, description, nodes, edges }: GraphCardProps) {
+  const codeString = `const nodes = ${JSON.stringify(nodes, null, 2)};
+
+const edges = ${JSON.stringify(edges, null, 2)};
+
+<GridGraph nodes={nodes} edges={edges}>
+  <GridGraph.Header />
+  <GridGraph.Content />
+</GridGraph>`;
+
   return (
-    <Grid item xs={12} lg={6}>
+    <Grid item xs={12}>
       <Paper
         sx={{
           p: 3,
@@ -25,12 +36,43 @@ function GraphCard({ title, description, nodes, edges }: GraphCardProps) {
         <Typography variant="body2" paragraph color="text.secondary">
           {description}
         </Typography>
-        <Box sx={{ border: '1px solid #ddd', borderRadius: 1, p: 2, flexGrow: 1 }}>
-          <GridGraph nodes={nodes} edges={edges}>
-            <GridGraph.Header />
-            <GridGraph.Content />
-          </GridGraph>
-        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle2" gutterBottom fontWeight="bold">
+              Visual Output
+            </Typography>
+            <Box sx={{ border: '1px solid #ddd', borderRadius: 1, p: 2, height: 500 }}>
+              <GridGraph nodes={nodes} edges={edges}>
+                <GridGraph.Header />
+                <GridGraph.Content />
+              </GridGraph>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle2" gutterBottom fontWeight="bold">
+              Code
+            </Typography>
+            <Box sx={{ 
+              border: '1px solid #ddd', 
+              borderRadius: 1, 
+              overflow: 'auto',
+              height: 500,
+              '& pre': { margin: 0 }
+            }}>
+              <SyntaxHighlighter 
+                language="tsx" 
+                style={vscDarkPlus}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '4px',
+                  fontSize: '0.875rem',
+                }}
+              >
+                {codeString}
+              </SyntaxHighlighter>
+            </Box>
+          </Grid>
+        </Grid>
       </Paper>
     </Grid>
   );
