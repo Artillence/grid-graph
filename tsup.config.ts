@@ -8,4 +8,7 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   target: 'esnext',
+  loader: {
+    '.css': 'copy',
+  },
 });

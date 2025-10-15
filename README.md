@@ -12,14 +12,13 @@ React library for visualizing directed acyclic graphs with automatic branch dete
 ## Installation
 
 ```bash
-npm install grid-graph
+npm install @artillence/grid-graph
 ```
 
 ## Quick Start
 
 ```tsx
-import { GridGraph } from 'grid-graph';
-import 'grid-graph/styles.css';
+import { GridGraph } from '@artillence/grid-graph';
 
 const nodes = [
   { id: '1', label: 'Start', branch: 'main' },
