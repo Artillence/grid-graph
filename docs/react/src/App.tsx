@@ -16,7 +16,6 @@ import HomePage from "./pages/HomePage";
 import ExamplesPage from "./pages/ExamplesPage.js";
 import PlaygroundPage from "./pages/PlaygroundPage.js";
 import ReferencePage from "./pages/ApiDocsPage.js";
-import "grid-graph/styles.css";
 
 const theme = createTheme({
   palette: {
