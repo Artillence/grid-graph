@@ -1,6 +1,6 @@
 {
   "name": "@artillence/grid-graph",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "grid-graph is a minimalist React component for rendering Directed Acyclic Graphs (DAGs) in a clean, readable grid layout. Inspired by VSCode git graph.",
   "license": "MIT",
   "author": "Gábor Pallos",
