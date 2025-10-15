@@ -1,2 +1,47 @@
+# Source files
 src
 tsconfig.json
+tsup.config.ts
+
+# Documentation
+docs
+
+# Development files
+.git
+.gitignore
+.npmignore
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Build tools
+node_modules
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Tests
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+test
+tests
+coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Misc
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
