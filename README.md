@@ -107,6 +107,38 @@ Grid Graph uses a compound component pattern for maximum flexibility:
 </GridGraph>
 ```
 
+### Example: Auto-Named Branches
+
+```tsx
+// No need to specify branch properties!
+const nodes = [
+  { id: "start", label: "Start" },
+  { id: "feature-a", label: "Feature A" },
+  { id: "feature-b", label: "Feature B" },
+  { id: "merge", label: "Merge" },
+];
+
+const edges = [
+  { id: "e1", source: "start", target: "feature-a" },
+  { id: "e2", source: "start", target: "feature-b" },
+  { id: "e3", source: "feature-a", target: "merge" },
+  { id: "e4", source: "feature-b", target: "merge" },
+];
+
+<GridGraph nodes={nodes} edges={edges} autoNameBranches={true}>
+  <GridGraph.Header>
+    <GridGraph.BranchDots />
+    <GridGraph.BranchNames />
+  </GridGraph.Header>
+  <GridGraph.Content>
+    <GridGraph.LaneLines />
+    <GridGraph.RowBackgrounds />
+    <GridGraph.Edges />
+    <GridGraph.Nodes />
+  </GridGraph.Content>
+</GridGraph>
+```
+
 ## Styling
 
 All components accept both `className` and `style` props for maximum flexibility:
@@ -119,11 +151,25 @@ Some components also accept specialized className props:
 - `Edges`: `pathClassName`
 - `Nodes`: `labelClassName`, `selectedLabelClassName`
 
+## Auto-Named Branches
+
+Set `autoNameBranches={true}` to automatically name branches after their first node. In this mode:
+
+- No need to specify `branch` property on any nodes
+- Branches are automatically named using the ID of their first node
+- Validation rules for explicit branch naming are skipped
+- Perfect for simpler graphs where you don't need custom branch names
+
 ## Validation
 
+When `autoNameBranches` is **false** (default):
 - Nodes with multiple children: all but one child must have explicit `branch` property
 - Nodes with multiple parents: must have explicit `branch` property
 - Graph must be acyclic (DAG)
+
+When `autoNameBranches` is **true**:
+- No branch property requirements
+- Graph must still be acyclic (DAG)
 
 ## Documentation
 

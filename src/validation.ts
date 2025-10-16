@@ -6,7 +6,13 @@ export function validateGraph(
   nodeMap: Map<string, Node>,
   parentMap: Map<string, string[]>,
   childMap: Map<string, string[]>,
+  autoNameBranches: boolean = false,
 ): void {
+  // Skip validation if auto-naming branches
+  if (autoNameBranches) {
+    return;
+  }
+
   for (const [nodeId, parents] of parentMap.entries()) {
     if (parents.length > 1 && !nodeMap.get(nodeId)?.branch) {
       throw new Error(
@@ -39,7 +45,7 @@ export function validateGraph(
   }
 }
 
-export function validateAndSort(nodes: Node[], edges: Edge[]): string[] {
+export function validateAndSort(nodes: Node[], edges: Edge[], autoNameBranches: boolean = false): string[] {
   if (nodes.length === 0) return [];
 
   const { nodeMap, parentMap, childMap, inDegree } = buildGraphMaps(
@@ -47,7 +53,7 @@ export function validateAndSort(nodes: Node[], edges: Edge[]): string[] {
     edges,
   );
 
-  validateGraph(nodeMap, parentMap, childMap);
+  validateGraph(nodeMap, parentMap, childMap, autoNameBranches);
 
   if (detectCycles(nodes, childMap, inDegree)) {
     throw new Error("Graph contains a cycle and is not a valid DAG.");

@@ -9,16 +9,18 @@ export function useGraphLayout(
   edges: Edge[],
   branchOrder?: string[],
   colors: string[] = DEFAULT_CONFIG.colors,
+  autoNameBranches: boolean = false,
 ): LayoutData {
   return useMemo((): LayoutData => {
     try {
-      const sortedIds = validateAndSort(nodes, edges);
+      const sortedIds = validateAndSort(nodes, edges, autoNameBranches);
       const layout = calculateLayout(
         nodes,
         edges,
         sortedIds,
         colors,
         branchOrder,
+        autoNameBranches,
       );
       return { ...layout, error: null };
     } catch (e: unknown) {
@@ -33,5 +35,5 @@ export function useGraphLayout(
         error: (e as Error).message,
       };
     }
-  }, [nodes, edges, branchOrder, colors]);
+  }, [nodes, edges, branchOrder, colors, autoNameBranches]);
 }

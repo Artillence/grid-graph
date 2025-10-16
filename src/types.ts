@@ -63,6 +63,8 @@ export type GraphProps = {
   branchOrder?: string[];
   /** Custom inline styles for the root container */
   style?: React.CSSProperties;
+  /** Auto-name branches after their first node (default: false) */
+  autoNameBranches?: boolean;
 };
 
 export type LayoutData = {

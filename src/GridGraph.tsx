@@ -61,6 +61,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   style: userStyle,
   onReorderBranches: onReorderBranches_,
   branchOrder: branchOrder_,
+  autoNameBranches = false,
   children,
 }) => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -80,6 +81,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     edges,
     branchOrder_,
     config.colors ?? DEFAULT_CONFIG.colors,
+    autoNameBranches,
   );
 
   const { parentMap } = buildGraphMaps(nodes, edges);

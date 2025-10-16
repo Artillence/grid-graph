@@ -25,6 +25,7 @@ export function assignBranches(
   sortedNodeIds: string[],
   nodeMap: Map<string, Node>,
   parentMap: Map<string, string[]>,
+  autoNameBranches: boolean = false,
 ): Map<string, string> {
   const nodeBranchMap = new Map<string, string>();
 
@@ -33,12 +34,29 @@ export function assignBranches(
     const parents = parentMap.get(nodeId) || [];
 
     let branch: string;
-    if (node.branch) {
-      branch = node.branch;
-    } else if (parents.length === 1) {
-      branch = nodeBranchMap.get(parents[0])!;
+    
+    if (autoNameBranches) {
+      // In auto-name mode, ignore explicit branch properties
+      if (parents.length === 0) {
+        // Root node - create a new branch named after this node
+        branch = nodeId;
+      } else if (parents.length === 1) {
+        // Single parent - continue on parent's branch
+        branch = nodeBranchMap.get(parents[0])!;
+      } else {
+        // Multiple parents (merge) - prefer the branch that started with the leftmost parent
+        // or create a new branch named after this node
+        branch = nodeId;
+      }
     } else {
-      branch = nodeId;
+      
+      if (node.branch) {
+        branch = node.branch;
+      } else if (parents.length === 1) {
+        branch = nodeBranchMap.get(parents[0])!;
+      } else {
+        branch = nodeId;
+      }
     }
 
     nodeBranchMap.set(nodeId, branch);
@@ -108,9 +126,10 @@ export function calculateLayout(
   sortedNodeIds: string[],
   colors: string[],
   order_?: string[],
+  autoNameBranches: boolean = false,
 ): Omit<LayoutData, "error"> {
   const { nodeMap, parentMap, childMap } = buildGraphMaps(nodes, edges);
-  const nodeBranchMap = assignBranches(sortedNodeIds, nodeMap, parentMap);
+  const nodeBranchMap = assignBranches(sortedNodeIds, nodeMap, parentMap, autoNameBranches);
   const { nodeColumnMap, branchLaneMap } = assignLanes(
     sortedNodeIds,
     nodeBranchMap,

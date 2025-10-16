@@ -96,6 +96,14 @@ export default function ReferencePage() {
                 </TableCell>
               </TableRow>
               <TableRow>
+                <TableCell>autoNameBranches</TableCell>
+                <TableCell>boolean</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>
+                  Auto-name branches after their first node. When true, no branch properties are required on nodes (default: false)
+                </TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell>style</TableCell>
                 <TableCell>React.CSSProperties</TableCell>
                 <TableCell>No</TableCell>

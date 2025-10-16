@@ -8,7 +8,7 @@ interface GraphCardProps {
   description: string;
   nodes: any[];
   edges: any[];
-  composition?: "full" | "minimal" | "no-header" | "custom";
+  composition?: "full" | "minimal" | "no-header" | "custom" | "auto-name";
   customCode?: string;
 }
 
@@ -85,6 +85,37 @@ function GraphCard({
     <GridGraph.RowBackgrounds />
     <GridGraph.Edges />
     <GridGraph.Nodes showLabels={false} />
+  </GridGraph.Content>
+</GridGraph>`;
+      break;
+
+    case "auto-name":
+      graphElement = (
+        <GridGraph nodes={nodes} edges={edges} autoNameBranches style={{ width: "100%" }}>
+          <GridGraph.Header>
+            <GridGraph.BranchDots />
+            <GridGraph.BranchNames />
+          </GridGraph.Header>
+          <GridGraph.Content>
+            <GridGraph.LaneLines />
+            <GridGraph.RowBackgrounds />
+            <GridGraph.Edges />
+            <GridGraph.Nodes />
+          </GridGraph.Content>
+        </GridGraph>
+      );
+      codeString =
+        customCode ||
+        `<GridGraph nodes={nodes} edges={edges} autoNameBranches style={{ width: "100%" }}>
+  <GridGraph.Header>
+    <GridGraph.BranchDots />
+    <GridGraph.BranchNames />
+  </GridGraph.Header>
+  <GridGraph.Content>
+    <GridGraph.LaneLines />
+    <GridGraph.RowBackgrounds />
+    <GridGraph.Edges />
+    <GridGraph.Nodes />
   </GridGraph.Content>
 </GridGraph>`;
       break;
@@ -313,6 +344,32 @@ export default function ExamplesPage() {
         { id: "e7", source: "train-nn", target: "evaluate" },
         { id: "e8", source: "evaluate", target: "select" },
         { id: "e9", source: "select", target: "deploy" },
+      ],
+    },
+    {
+      title: "Auto-Named Branches",
+      description:
+        "Using autoNameBranches mode, branches are automatically named after their first node. No need to specify branch properties on nodes!",
+      composition: "auto-name" as const,
+      nodes: [
+        { id: "start", label: "Start" },
+        { id: "task-1", label: "Task 1" },
+        { id: "feature-x", label: "Feature X" },
+        { id: "feature-y", label: "Feature Y" },
+        { id: "test-x", label: "Test X" },
+        { id: "test-y", label: "Test Y" },
+        { id: "merge", label: "Merge" },
+        { id: "deploy", label: "Deploy" },
+      ],
+      edges: [
+        { id: "e1", source: "start", target: "task-1" },
+        { id: "e2", source: "task-1", target: "feature-x" },
+        { id: "e3", source: "task-1", target: "feature-y" },
+        { id: "e4", source: "feature-x", target: "test-x" },
+        { id: "e5", source: "feature-y", target: "test-y" },
+        { id: "e6", source: "test-x", target: "merge" },
+        { id: "e7", source: "test-y", target: "merge" },
+        { id: "e8", source: "merge", target: "deploy" },
       ],
     },
   ];

@@ -112,6 +112,7 @@ function GraphWithErrorHandling(props: GraphWithErrorHandlingProps) {
           padding,
           cornerRadius,
         }}
+        style={{ width: "100%" }}
       >
         <GridGraph.Header>
           {showBranchDots && <GridGraph.BranchDots />}
@@ -149,10 +150,10 @@ const defaultEdges = [
 export default function PlaygroundPage() {
   const [branchOrder, setBranchOrder] = useState<string[]>([]);
   const [nodesJson, setNodesJson] = useState(
-    JSON.stringify(defaultNodes, null, 2),
+    JSON.stringify(defaultNodes, null, 2)
   );
   const [edgesJson, setEdgesJson] = useState(
-    JSON.stringify(defaultEdges, null, 2),
+    JSON.stringify(defaultEdges, null, 2)
   );
   const [nodes, setNodes] = useState(defaultNodes);
   const [edges, setEdges] = useState(defaultEdges);
