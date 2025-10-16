@@ -18,6 +18,7 @@
     "grid-graph": "file:../..",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4",
     "react-syntax-highlighter": "^15.5.0"
   },
   "devDependencies": {

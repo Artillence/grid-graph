@@ -51,7 +51,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             variant="outlined"
             size="large"
             startIcon={<GitHubIcon />}
-            href="https://github.com/Artillence/grid-graph"
+            href="https://github.com/Artillence/grid-graph/"
             target="_blank"
           >
             GitHub

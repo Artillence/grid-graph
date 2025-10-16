@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-export default function ApiDocsPage() {
+export default function ReferencePage() {
   return (
     <Box>
       <Typography variant="h3" gutterBottom fontWeight="bold">
@@ -346,35 +346,6 @@ export default function ApiDocsPage() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
-
-      <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h5" gutterBottom fontWeight="bold">
-          Usage Example
-        </Typography>
-        <Box
-          component="pre"
-          sx={{ bgcolor: "#f5f5f5", p: 2, borderRadius: 1, overflow: "auto" }}
-        >
-          <code>{`<GridGraph nodes={nodes} edges={edges} className="my-graph">
-  <GridGraph.Header>
-    <GridGraph.BranchDots />
-    <GridGraph.BranchNames className="font-bold" />
-  </GridGraph.Header>
-  <GridGraph.Content>
-    <GridGraph.LaneLines />
-    <GridGraph.RowBackgrounds 
-      selectedClassName="bg-blue-100"
-      hoveredClassName="bg-gray-50"
-    />
-    <GridGraph.Edges />
-    <GridGraph.Nodes 
-      showLabels={true}
-      labelClassName="text-sm"
-    />
-  </GridGraph.Content>
-</GridGraph>`}</code>
-        </Box>
       </Paper>
     </Box>
   );
