@@ -3,11 +3,22 @@
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  
+  /* Layout dimensions calculated by JS */
+  height: calc(var(--gg-header-height) + var(--gg-content-height));
+  min-width: var(--gg-graph-width);
+  width: fit-content;
 }
 
 .gg__header {
   position: relative;
   width: 100%;
+  height: var(--gg-header-height);
+}
+
+.gg__content {
+  position: relative;
+  height: var(--gg-content-height);
 }
 
 .gg__branch-label {
@@ -48,10 +59,6 @@
   pointer-events: none;
 }
 
-.gg__content {
-  position: relative;
-}
-
 .gg__lane-line {
   position: absolute;
   top: 0;
@@ -63,6 +70,8 @@
 .gg__lane-lines-container {
   pointer-events: none;
   position: absolute;
+  top: calc(-1 * var(--gg-header-height));
+  bottom: 0;
   z-index: 1;
 }
 

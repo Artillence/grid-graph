@@ -97,12 +97,8 @@ export const LaneLines: React.FC<{
   maxCol: number;
   config: ResolvedGraphConfig;
   className?: string;
-  headerHeight: string;
-}> = ({ maxCol, config, className, headerHeight }) => (
-  <div
-    className="gg__lane-lines-container"
-    style={{ top: `-${headerHeight || 0}`, bottom: 0 }}
-  >
+}> = ({ maxCol, config, className }) => (
+  <div className="gg__lane-lines-container">
     {Array.from({ length: maxCol + 1 }).map((_, colIndex) => {
       const xPos = getLaneXPosition(colIndex, config);
       return (

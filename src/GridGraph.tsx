@@ -26,8 +26,6 @@ type GridGraphContextValue = {
   config: typeof DEFAULT_CONFIG;
   verticalLabels: boolean;
   graphWidth: number;
-  contentHeight: number;
-  headerHeight: string;
   onNodeClick: (id: string) => void;
   onReorderBranches?: (newOrder: string[]) => void;
   nodes: GraphProps["nodes"];
@@ -93,25 +91,74 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     (layoutData.maxCol + 1) * config.columnWidth + config.padding;
   const contentHeight = nodes.length * config.rowHeight;
 
-  // Default to showing header if children includes Header
-  const hasHeader = React.Children.toArray(children).some(
+  // Check what's actually in the Header
+  let showBranchDots = false;
+  let showBranchNames = false;
+  
+  const headerChild = React.Children.toArray(children).find(
     (child) =>
       React.isValidElement(child) &&
-      (child.type === Header ||
-        (child.type as any)?.displayName === "GridGraph.Header"),
+      ((child.type as any)?.displayName === "GridGraph.Header"),
   );
+
+  if (headerChild && React.isValidElement(headerChild) && headerChild.props) {
+    const headerChildren = React.Children.toArray((headerChild.props as any).children);
+    showBranchDots = headerChildren.some(
+      (child) =>
+        React.isValidElement(child) &&
+        (child.type as any)?.displayName === "GridGraph.BranchDots",
+    );
+    showBranchNames = headerChildren.some(
+      (child) =>
+        React.isValidElement(child) &&
+        (child.type as any)?.displayName === "GridGraph.BranchNames",
+    );
+  }
 
   const headerHeight =
     config.headerHeight ??
     computeHeaderHeight(
-      hasHeader,
-      hasHeader,
+      showBranchDots,
+      showBranchNames,
       verticalLabels,
       layoutData.branchLaneMap,
     );
 
-  // Calculate if we need extra width for labels by checking if Nodes component shows labels
-  const totalWidth = graphWidth + 200; // Conservative default
+  // Validate component placement
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child)) {
+      const displayName = (child.type as any)?.displayName;
+      // Content-only components should not be in root or header
+      if (
+        displayName === "GridGraph.LaneLines" ||
+        displayName === "GridGraph.RowBackgrounds" ||
+        displayName === "GridGraph.Edges" ||
+        displayName === "GridGraph.Nodes"
+      ) {
+        throw new Error(
+          `${displayName} must be placed inside <GridGraph.Content>, not directly in <GridGraph>`,
+        );
+      }
+      // Check Header children
+      if (displayName === "GridGraph.Header" && (child.props as any)?.children) {
+        React.Children.forEach((child.props as any).children, (headerChild: React.ReactNode) => {
+          if (React.isValidElement(headerChild)) {
+            const headerChildName = (headerChild.type as any)?.displayName;
+            if (
+              headerChildName === "GridGraph.LaneLines" ||
+              headerChildName === "GridGraph.RowBackgrounds" ||
+              headerChildName === "GridGraph.Edges" ||
+              headerChildName === "GridGraph.Nodes"
+            ) {
+              throw new Error(
+                `${headerChildName} must be placed inside <GridGraph.Content>, not in <GridGraph.Header>`,
+              );
+            }
+          }
+        });
+      }
+    }
+  });
 
   const handleNodeClick = (id: string) => {
     setSelected(id);
@@ -130,8 +177,6 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     config,
     verticalLabels,
     graphWidth,
-    contentHeight,
-    headerHeight,
     onNodeClick: handleNodeClick,
     onReorderBranches: onReorderBranches_,
     nodes,
@@ -142,10 +187,15 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     <GridGraphContext.Provider value={contextValue}>
       <div
         className={className || "gg__container"}
-        style={{
-          height: `calc(${headerHeight} + ${contentHeight}px)`,
-          width: totalWidth,
-        }}
+        style={
+          {
+            // Only set computed layout values as CSS variables
+            // Config values are kept in JS only to avoid sync issues
+            "--gg-header-height": headerHeight,
+            "--gg-content-height": `${contentHeight}px`,
+            "--gg-graph-width": `${graphWidth}px`,
+          } as React.CSSProperties
+        }
       >
         {children}
       </div>
@@ -158,10 +208,8 @@ const Header: React.FC<{ children?: ReactNode; className?: string }> = ({
   children,
   className,
 }) => {
-  const { headerHeight } = useGridGraphContext();
-
   return (
-    <div className={className || "gg__header"} style={{ height: headerHeight }}>
+    <div className={className || "gg__header"}>
       {children}
     </div>
   );
@@ -174,13 +222,12 @@ const Content: React.FC<{ children?: ReactNode; className?: string }> = ({
   children,
   className,
 }) => {
-  const { contentHeight, containerRef } = useGridGraphContext();
+  const { containerRef } = useGridGraphContext();
 
   return (
     <div
       className={className || "gg__content"}
       ref={containerRef}
-      style={{ height: contentHeight }}
     >
       {children}
     </div>
@@ -222,13 +269,12 @@ const BranchNames: React.FC<{ className?: string }> = ({ className }) => {
 BranchNames.displayName = "GridGraph.BranchNames";
 
 const LaneLines: React.FC<{ className?: string }> = ({ className }) => {
-  const { layoutData, config, headerHeight } = useGridGraphContext();
+  const { layoutData, config } = useGridGraphContext();
 
   return (
     <PrimitiveLaneLines
       maxCol={layoutData.maxCol}
       config={config}
-      headerHeight={headerHeight}
       className={className}
     />
   );
