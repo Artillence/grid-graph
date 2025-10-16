@@ -1,4 +1,14 @@
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 export default function ReferencePage() {
   return (
@@ -18,10 +28,18 @@ export default function ReferencePage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Prop</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Prop</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -92,10 +110,18 @@ export default function ReferencePage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,7 +141,9 @@ export default function ReferencePage() {
                 <TableCell>branch</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Branch name (auto-detected from edges if not provided)</TableCell>
+                <TableCell>
+                  Branch name (auto-detected from edges if not provided)
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -130,10 +158,18 @@ export default function ReferencePage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -168,10 +204,18 @@ export default function ReferencePage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Default</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Default</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -230,10 +274,18 @@ export default function ReferencePage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Default</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Default</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

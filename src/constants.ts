@@ -1,4 +1,4 @@
-import { ResolvedGraphConfig, GraphVisibility, GraphClassNames } from "./types";
+import { ResolvedGraphConfig } from "./types";
 
 export type EdgePath = {
   id: string;
@@ -23,24 +23,4 @@ export const DEFAULT_CONFIG: Omit<ResolvedGraphConfig, "headerHeight"> = {
     "#F4A261",
     "#E76F51",
   ],
-};
-
-export const DEFAULT_VISIBILITY: Required<GraphVisibility> = {
-  showBranchDots: true,
-  showBranchNames: true,
-  showLaneLines: true,
-  showEdges: true,
-  showRowBackgrounds: true,
-  showNodeLabels: true,
-};
-
-export const DEFAULT_CLASSNAMES: Required<GraphClassNames> = {
-  container: "gg__container",
-  nodeLabel: "gg__node-label",
-  nodeLabelSelected: "gg__node-label-selected",
-  nodeBackground: "gg__node-background",
-  nodeBackgroundSelected: "gg__node-background-selected",
-  nodeBackgroundHovered: "gg__node-background-hovered",
-  branchLabel: "gg__branch-label",
-  laneLine: "gg__lane-line",
 };

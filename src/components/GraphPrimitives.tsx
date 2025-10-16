@@ -1,5 +1,5 @@
 import React from "react";
-import { Node, GraphClassNames, ResolvedGraphConfig } from "../types";
+import { Node, ResolvedGraphConfig } from "../types";
 import { getLaneXPosition } from "../utils";
 import { useBranchDrag } from "../hooks";
 
@@ -8,7 +8,14 @@ export const BranchDots: React.FC<{
   branchColorMap: Map<string, string>;
   config: ResolvedGraphConfig;
   onReorderBranches?: (newOrder: string[]) => void;
-}> = ({ branchLaneMap, branchColorMap, config, onReorderBranches }) => {
+  className?: string;
+}> = ({
+  branchLaneMap,
+  branchColorMap,
+  config,
+  onReorderBranches,
+  className,
+}) => {
   const { draggedBranch, hoverBranch, handleMouseDown } = useBranchDrag(
     branchLaneMap,
     config.columnWidth,
@@ -16,7 +23,7 @@ export const BranchDots: React.FC<{
   );
 
   return (
-    <div className="gg__absolute gg__inset-0 gg__z-20">
+    <div className={className || "gg__absolute gg__inset-0 gg__z-20"}>
       {Array.from(branchLaneMap.entries()).map(([branchName, colIndex]) => {
         const xPos = getLaneXPosition(colIndex, config);
         const color = branchColorMap.get(branchName) ?? "#ccc";
@@ -44,7 +51,7 @@ export const BranchNames: React.FC<{
   branchLaneMap: Map<string, number>;
   verticalLabels: boolean;
   config: ResolvedGraphConfig;
-  className: string;
+  className?: string;
 }> = ({ branchLaneMap, verticalLabels, config, className }) => (
   <div className="gg__branch-labels">
     {Array.from(branchLaneMap.entries()).map(([branchName, colIndex]) => {
@@ -60,7 +67,7 @@ export const BranchNames: React.FC<{
         return (
           <div
             key={`label-v-${branchName}`}
-            className={className}
+            className={className || "gg__branch-label"}
             style={{
               ...baseStyle,
               top: 0,
@@ -76,7 +83,7 @@ export const BranchNames: React.FC<{
       return (
         <div
           key={`label-h-${branchName}`}
-          className={className}
+          className={className || "gg__branch-label"}
           style={baseStyle}
         >
           {branchName}
@@ -89,7 +96,7 @@ export const BranchNames: React.FC<{
 export const LaneLines: React.FC<{
   maxCol: number;
   config: ResolvedGraphConfig;
-  className: string;
+  className?: string;
   headerHeight: string;
 }> = ({ maxCol, config, className, headerHeight }) => (
   <div
@@ -101,7 +108,7 @@ export const LaneLines: React.FC<{
       return (
         <div
           key={`lane-${colIndex}`}
-          className={className}
+          className={className || "gg__lane-line"}
           style={{ left: xPos - 1 }}
         />
       );
@@ -109,22 +116,32 @@ export const LaneLines: React.FC<{
   </div>
 );
 
-export const NodeBackgrounds: React.FC<{
+export const RowBackgrounds: React.FC<{
   nodeRenderIndex: Map<string, number>;
   selected: string | null;
   hovered: string | null;
   rowHeight: number;
-  classNames: Required<GraphClassNames>;
-}> = ({ nodeRenderIndex, selected, hovered, rowHeight, classNames }) => (
+  className?: string;
+  selectedClassName?: string;
+  hoveredClassName?: string;
+}> = ({
+  nodeRenderIndex,
+  selected,
+  hovered,
+  rowHeight,
+  className,
+  selectedClassName,
+  hoveredClassName,
+}) => (
   <div className="gg__node-backgrounds">
     {Array.from(nodeRenderIndex.entries()).map(([nodeId, index]) => (
       <div
         key={`bg-${nodeId}`}
-        className={`${classNames.nodeBackground} ${
+        className={`${className || "gg__node-background"} ${
           selected === nodeId
-            ? classNames.nodeBackgroundSelected
+            ? selectedClassName || "gg__node-background-selected"
             : hovered === nodeId
-              ? classNames.nodeBackgroundHovered
+              ? hoveredClassName || "gg__node-background-hovered"
               : ""
         }`}
         style={{
@@ -141,12 +158,14 @@ export const NodeBackgrounds: React.FC<{
 
 export const Edges: React.FC<{
   edgePaths: { id: string; path: string; color: string }[];
-}> = ({ edgePaths }) => (
-  <svg className="gg__edges">
+  className?: string;
+  pathClassName?: string;
+}> = ({ edgePaths, className, pathClassName }) => (
+  <svg className={className || "gg__edges"}>
     {edgePaths.map((edge) => (
       <path
         key={edge.id}
-        className="gg__edge-path"
+        className={pathClassName || "gg__edge-path"}
         d={edge.path}
         stroke={edge.color}
         strokeWidth={2.5}
@@ -195,9 +214,10 @@ export const Nodes: React.FC<{
   onMouseEnter: (id: string) => void;
   onMouseLeave: () => void;
   config: ResolvedGraphConfig;
-  classNames: Required<GraphClassNames>;
   graphWidth: number;
-  showNodeLabels: boolean;
+  showLabels?: boolean;
+  labelClassName?: string;
+  selectedLabelClassName?: string;
 }> = ({
   nodes,
   nodeColumnMap,
@@ -211,9 +231,10 @@ export const Nodes: React.FC<{
   onMouseEnter,
   onMouseLeave,
   config,
-  classNames,
   graphWidth,
-  showNodeLabels,
+  showLabels = true,
+  labelClassName,
+  selectedLabelClassName,
 }) => (
   <div className="gg__nodes">
     {nodes.map((node) => {
@@ -246,10 +267,10 @@ export const Nodes: React.FC<{
               nodeRefs={nodeRefs}
             />
           </div>
-          {showNodeLabels && (
+          {showLabels && (
             <div
               style={{ marginLeft: config.labelLeftMargin }}
-              className={`${classNames.nodeLabel} ${isSelected ? classNames.nodeLabelSelected : ""}`}
+              className={`${labelClassName || "gg__node-label"} ${isSelected ? selectedLabelClassName || "gg__node-label-selected" : ""}`}
             >
               {node.label}
             </div>

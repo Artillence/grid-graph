@@ -1,14 +1,9 @@
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Paper, Button } from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { GridGraph } from "grid-graph";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const quickStartNodes = [
   { id: "1", label: "Initial", branch: "main" },
@@ -72,38 +67,49 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         <Typography variant="body1" paragraph>
           Install the package:
         </Typography>
-                
-        <SyntaxHighlighter 
-          language="bash" 
+
+        <SyntaxHighlighter
+          language="bash"
           style={vscDarkPlus}
-          customStyle={{ marginBottom: '24px', borderRadius: '4px' }}
+          customStyle={{ marginBottom: "24px", borderRadius: "4px" }}
         >
           npm install grid-graph
         </SyntaxHighlighter>
-        
 
         <Typography variant="body1" paragraph>
           Use it in your React app:
         </Typography>
-        <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
-        </Typography>
-        <Box sx={{ p: 3, border: "1px solid #ddd", borderRadius: 1, mb: 4, bgcolor: "#fafafa" }}>
+        <Typography variant="body1" gutterBottom sx={{ mb: 2 }}></Typography>
+        <Box
+          sx={{
+            p: 3,
+            border: "1px solid #ddd",
+            borderRadius: 1,
+            mb: 4,
+            bgcolor: "#fafafa",
+          }}
+        >
           <GridGraph nodes={quickStartNodes} edges={quickStartEdges}>
-            <GridGraph.Header />
-            <GridGraph.Content />
+            <GridGraph.Header>
+              <GridGraph.BranchDots />
+              <GridGraph.BranchNames />
+            </GridGraph.Header>
+            <GridGraph.Content>
+              <GridGraph.LaneLines />
+              <GridGraph.RowBackgrounds />
+              <GridGraph.Edges />
+              <GridGraph.Nodes />
+            </GridGraph.Content>
           </GridGraph>
         </Box>
 
-
-
-        <Typography variant="body1" paragraph>
-        </Typography>
-        <SyntaxHighlighter 
-          language="typescript" 
+        <Typography variant="body1" paragraph></Typography>
+        <SyntaxHighlighter
+          language="typescript"
           style={vscDarkPlus}
-          customStyle={{ borderRadius: '4px' }}
+          customStyle={{ borderRadius: "4px" }}
         >
-{`import { GridGraph } from 'grid-graph';
+          {`import { GridGraph } from 'grid-graph';
 import 'grid-graph/styles.css';
 
 const nodes = [
@@ -128,8 +134,16 @@ const edges = [
 function App() {
   return (
     <GridGraph nodes={nodes} edges={edges}>
-      <GridGraph.Header />
-      <GridGraph.Content />
+      <GridGraph.Header>
+        <GridGraph.BranchDots />
+        <GridGraph.BranchNames />
+      </GridGraph.Header>
+      <GridGraph.Content>
+        <GridGraph.LaneLines />
+        <GridGraph.RowBackgrounds />
+        <GridGraph.Edges />
+        <GridGraph.Nodes />
+      </GridGraph.Content>
     </GridGraph>
   );
 }`}

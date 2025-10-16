@@ -1,15 +1,18 @@
 "use client";
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useRef, ReactNode } from "react";
 import { GraphProps, LayoutData } from "./types";
-import {
-  DEFAULT_CONFIG,
-  DEFAULT_VISIBILITY,
-  DEFAULT_CLASSNAMES,
-} from "./constants";
+import { DEFAULT_CONFIG } from "./constants";
 import { computeHeaderHeight } from "./utils";
 import { useGraphLayout, useEdgePaths } from "./hooks";
 import { buildGraphMaps } from "./layout";
-import { GraphHeader, GraphContent } from "./components";
+import {
+  BranchDots as PrimitiveBranchDots,
+  BranchNames as PrimitiveBranchNames,
+  LaneLines as PrimitiveLaneLines,
+  RowBackgrounds as PrimitiveRowBackgrounds,
+  Edges as PrimitiveEdges,
+  Nodes as PrimitiveNodes,
+} from "./components/GraphPrimitives";
 
 type GridGraphContextValue = {
   layoutData: LayoutData;
@@ -21,8 +24,6 @@ type GridGraphContextValue = {
   nodeRefs: React.MutableRefObject<Map<string, HTMLDivElement>>;
   containerRef: React.RefObject<HTMLDivElement | null>;
   config: typeof DEFAULT_CONFIG;
-  classNames: typeof DEFAULT_CLASSNAMES;
-  visibility: typeof DEFAULT_VISIBILITY;
   verticalLabels: boolean;
   graphWidth: number;
   contentHeight: number;
@@ -57,8 +58,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   onSelect,
   verticalLabels = true,
   config: config_,
-  visibility: visibility_,
-  classNames: classNames_,
+  className,
   onReorderBranches: onReorderBranches_,
   branchOrder: branchOrder_,
   children,
@@ -74,8 +74,6 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     ...config_,
     colors: config_?.colors ?? DEFAULT_CONFIG.colors,
   };
-  const visibility = { ...DEFAULT_VISIBILITY, ...visibility_ };
-  const classNames = { ...DEFAULT_CLASSNAMES, ...classNames_ };
 
   const layoutData = useGraphLayout(
     nodes,
@@ -94,15 +92,26 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   const graphWidth =
     (layoutData.maxCol + 1) * config.columnWidth + config.padding;
   const contentHeight = nodes.length * config.rowHeight;
+
+  // Default to showing header if children includes Header
+  const hasHeader = React.Children.toArray(children).some(
+    (child) =>
+      React.isValidElement(child) &&
+      (child.type === Header ||
+        (child.type as any)?.displayName === "GridGraph.Header"),
+  );
+
   const headerHeight =
     config.headerHeight ??
     computeHeaderHeight(
-      visibility.showBranchDots,
-      visibility.showBranchNames,
+      hasHeader,
+      hasHeader,
       verticalLabels,
       layoutData.branchLaneMap,
     );
-  const totalWidth = visibility.showNodeLabels ? graphWidth + 200 : graphWidth;
+
+  // Calculate if we need extra width for labels by checking if Nodes component shows labels
+  const totalWidth = graphWidth + 200; // Conservative default
 
   const handleNodeClick = (id: string) => {
     setSelected(id);
@@ -119,8 +128,6 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     nodeRefs,
     containerRef,
     config,
-    classNames,
-    visibility,
     verticalLabels,
     graphWidth,
     contentHeight,
@@ -134,7 +141,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   return (
     <GridGraphContext.Provider value={contextValue}>
       <div
-        className={classNames.container}
+        className={className || "gg__container"}
         style={{
           height: `calc(${headerHeight} + ${contentHeight}px)`,
           width: totalWidth,
@@ -146,81 +153,176 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   );
 };
 
-const Header: React.FC = () => {
-  const {
-    layoutData,
-    config,
-    classNames,
-    headerHeight,
-    verticalLabels,
-    visibility,
-    onReorderBranches,
-  } = useGridGraphContext();
-
-  const showBranchDots = visibility.showBranchDots;
-  const showBranchNames = visibility.showBranchNames;
-
-  if (!showBranchDots && !showBranchNames) return null;
+// Header Component - renders children
+const Header: React.FC<{ children?: ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => {
+  const { headerHeight } = useGridGraphContext();
 
   return (
-    <GraphHeader
+    <div className={className || "gg__header"} style={{ height: headerHeight }}>
+      {children}
+    </div>
+  );
+};
+
+Header.displayName = "GridGraph.Header";
+
+// Content Component - renders children
+const Content: React.FC<{ children?: ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => {
+  const { contentHeight, containerRef } = useGridGraphContext();
+
+  return (
+    <div
+      className={className || "gg__content"}
+      ref={containerRef}
+      style={{ height: contentHeight }}
+    >
+      {children}
+    </div>
+  );
+};
+
+Content.displayName = "GridGraph.Content";
+
+// Primitive components wrapped to use context
+const BranchDots: React.FC<{ className?: string }> = ({ className }) => {
+  const { layoutData, config, onReorderBranches } = useGridGraphContext();
+
+  return (
+    <PrimitiveBranchDots
       branchLaneMap={layoutData.branchLaneMap}
       branchColorMap={layoutData.branchColorMap}
       config={config}
-      classNames={classNames}
-      headerHeight={headerHeight}
-      verticalLabels={verticalLabels}
-      showBranchDots={showBranchDots}
-      showBranchNames={showBranchNames}
       onReorderBranches={onReorderBranches}
+      className={className}
     />
   );
 };
 
-const Body: React.FC = () => {
+BranchDots.displayName = "GridGraph.BranchDots";
+
+const BranchNames: React.FC<{ className?: string }> = ({ className }) => {
+  const { layoutData, config, verticalLabels } = useGridGraphContext();
+
+  return (
+    <PrimitiveBranchNames
+      branchLaneMap={layoutData.branchLaneMap}
+      verticalLabels={verticalLabels}
+      config={config}
+      className={className}
+    />
+  );
+};
+
+BranchNames.displayName = "GridGraph.BranchNames";
+
+const LaneLines: React.FC<{ className?: string }> = ({ className }) => {
+  const { layoutData, config, headerHeight } = useGridGraphContext();
+
+  return (
+    <PrimitiveLaneLines
+      maxCol={layoutData.maxCol}
+      config={config}
+      headerHeight={headerHeight}
+      className={className}
+    />
+  );
+};
+
+LaneLines.displayName = "GridGraph.LaneLines";
+
+const RowBackgrounds: React.FC<{
+  className?: string;
+  selectedClassName?: string;
+  hoveredClassName?: string;
+}> = ({ className, selectedClassName, hoveredClassName }) => {
+  const { layoutData, selected, hovered, config } = useGridGraphContext();
+
+  return (
+    <PrimitiveRowBackgrounds
+      nodeRenderIndex={layoutData.nodeRenderIndex}
+      selected={selected}
+      hovered={hovered}
+      rowHeight={config.rowHeight}
+      className={className}
+      selectedClassName={selectedClassName}
+      hoveredClassName={hoveredClassName}
+    />
+  );
+};
+
+RowBackgrounds.displayName = "GridGraph.RowBackgrounds";
+
+const Edges: React.FC<{
+  className?: string;
+  pathClassName?: string;
+}> = ({ className, pathClassName }) => {
+  const { edgePaths } = useGridGraphContext();
+
+  return (
+    <PrimitiveEdges
+      edgePaths={edgePaths}
+      className={className}
+      pathClassName={pathClassName}
+    />
+  );
+};
+
+Edges.displayName = "GridGraph.Edges";
+
+const Nodes: React.FC<{
+  showLabels?: boolean;
+  labelClassName?: string;
+  selectedLabelClassName?: string;
+}> = ({ showLabels = true, labelClassName, selectedLabelClassName }) => {
   const {
     nodes,
-    edges,
     layoutData,
-    edgePaths,
     selected,
     hovered,
+    nodeRefs,
     onNodeClick,
     setHovered,
-    nodeRefs,
-    containerRef,
     config,
-    classNames,
-    visibility,
-    headerHeight,
     graphWidth,
-    contentHeight,
   } = useGridGraphContext();
 
   return (
-    <GraphContent
+    <PrimitiveNodes
       nodes={nodes}
-      edges={edges}
-      layoutData={layoutData}
-      edgePaths={edgePaths}
+      nodeColumnMap={layoutData.nodeColumnMap}
+      nodeBranchMap={layoutData.nodeBranchMap}
+      branchColorMap={layoutData.branchColorMap}
+      nodeRenderIndex={layoutData.nodeRenderIndex}
       selected={selected}
       hovered={hovered}
+      nodeRefs={nodeRefs}
       onNodeClick={onNodeClick}
       onMouseEnter={setHovered}
       onMouseLeave={() => setHovered(null)}
-      nodeRefs={nodeRefs}
-      containerRef={containerRef}
       config={config}
-      classNames={classNames}
-      visibility={visibility}
-      headerHeight={headerHeight}
       graphWidth={graphWidth}
-      contentHeight={contentHeight}
+      showLabels={showLabels}
+      labelClassName={labelClassName}
+      selectedLabelClassName={selectedLabelClassName}
     />
   );
 };
 
+Nodes.displayName = "GridGraph.Nodes";
+
 export const GridGraph = Object.assign(GridGraphRoot, {
-  Header: Header,
-  Content: Body,
+  Header,
+  Content,
+  BranchDots,
+  BranchNames,
+  LaneLines,
+  RowBackgrounds,
+  Edges,
+  Nodes,
 });

@@ -1,4 +1,4 @@
 import "./styles.css";
 
 export { GridGraph } from "./GridGraph.js";
-export * from "./types.js";
+export type { Node, Edge, GraphConfig, GraphProps } from "./types.js";

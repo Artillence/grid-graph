@@ -27,34 +27,13 @@ export type ResolvedGraphConfig = Required<
   headerHeight?: string;
 };
 
-export type GraphVisibility = {
-  showBranchDots?: boolean;
-  showBranchNames?: boolean;
-  showLaneLines?: boolean;
-  showEdges?: boolean;
-  showRowBackgrounds?: boolean;
-  showNodeLabels?: boolean;
-};
-
-export type GraphClassNames = {
-  container?: string;
-  nodeLabel?: string;
-  nodeLabelSelected?: string;
-  nodeBackground?: string;
-  nodeBackgroundSelected?: string;
-  nodeBackgroundHovered?: string;
-  branchLabel?: string;
-  laneLine?: string;
-};
-
 export type GraphProps = {
   nodes: Node[];
   edges: Edge[];
   onSelect?: (id: string) => void;
   verticalLabels?: boolean;
   config?: GraphConfig;
-  visibility?: GraphVisibility;
-  classNames?: GraphClassNames;
+  className?: string;
   onReorderBranches?: (newOrder: string[]) => void;
   branchOrder?: string[];
 };

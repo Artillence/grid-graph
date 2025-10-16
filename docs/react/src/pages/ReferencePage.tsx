@@ -1,27 +1,45 @@
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 export default function ApiDocsPage() {
   return (
     <Box>
       <Typography variant="h3" gutterBottom fontWeight="bold">
-        API Documentation
+        API Reference
       </Typography>
       <Typography variant="body1" paragraph color="text.secondary">
-        Complete reference for GridGraph component props and configuration
+        Complete reference for GridGraph compound components and configuration
       </Typography>
 
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h5" gutterBottom fontWeight="bold">
-          GridGraph Props
+          GridGraph (Root Component)
         </Typography>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Prop</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Prop</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -44,16 +62,10 @@ export default function ApiDocsPage() {
                 <TableCell>Configuration for dimensions and styling</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>visibility</TableCell>
-                <TableCell>GraphVisibility</TableCell>
+                <TableCell>className</TableCell>
+                <TableCell>string</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Control visibility of graph elements</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>classNames</TableCell>
-                <TableCell>GraphClassNames</TableCell>
-                <TableCell>No</TableCell>
-                <TableCell>Custom CSS class names for styling</TableCell>
+                <TableCell>Custom CSS class for root container</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>branchOrder</TableCell>
@@ -65,7 +77,9 @@ export default function ApiDocsPage() {
                 <TableCell>onReorderBranches</TableCell>
                 <TableCell>(order: string[]) =&gt; void</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Callback when branches are reordered</TableCell>
+                <TableCell>
+                  Callback when branches are reordered (enables drag)
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>onSelect</TableCell>
@@ -77,7 +91,93 @@ export default function ApiDocsPage() {
                 <TableCell>verticalLabels</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Display branch labels vertically</TableCell>
+                <TableCell>
+                  Display branch labels vertically (default: true)
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold">
+          Compound Components
+        </Typography>
+        <Typography
+          variant="body2"
+          paragraph
+          color="text.secondary"
+          sx={{ mb: 2 }}
+        >
+          GridGraph uses a compound component pattern. Compose the graph by
+          rendering only the components you need.
+        </Typography>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <strong>Component</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Props</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>GridGraph.Header</TableCell>
+                <TableCell>className?, children?</TableCell>
+                <TableCell>Header container for branch decorations</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.Content</TableCell>
+                <TableCell>className?, children?</TableCell>
+                <TableCell>Main content container for graph elements</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.BranchDots</TableCell>
+                <TableCell>className?</TableCell>
+                <TableCell>Branch indicator dots (use in Header)</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.BranchNames</TableCell>
+                <TableCell>className?</TableCell>
+                <TableCell>Branch name labels (use in Header)</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.LaneLines</TableCell>
+                <TableCell>className?</TableCell>
+                <TableCell>Vertical lane lines (use in Content)</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.RowBackgrounds</TableCell>
+                <TableCell>
+                  className?, selectedClassName?, hoveredClassName?
+                </TableCell>
+                <TableCell>
+                  Row background highlights (use in Content)
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.Edges</TableCell>
+                <TableCell>className?, pathClassName?</TableCell>
+                <TableCell>
+                  Connection lines between nodes (use in Content)
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>GridGraph.Nodes</TableCell>
+                <TableCell>
+                  showLabels?, labelClassName?, selectedLabelClassName?
+                </TableCell>
+                <TableCell>
+                  Graph nodes with optional labels (use in Content)
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -92,10 +192,18 @@ export default function ApiDocsPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,7 +223,9 @@ export default function ApiDocsPage() {
                 <TableCell>branch</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Branch name (auto-detected from edges if not provided)</TableCell>
+                <TableCell>
+                  Branch name (auto-detected from edges if not provided)
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -130,10 +240,18 @@ export default function ApiDocsPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Required</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Required</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -168,10 +286,18 @@ export default function ApiDocsPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Default</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Default</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -222,60 +348,33 @@ export default function ApiDocsPage() {
         </TableContainer>
       </Paper>
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h5" gutterBottom fontWeight="bold">
-          GraphVisibility Type
+          Usage Example
         </Typography>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell><strong>Property</strong></TableCell>
-                <TableCell><strong>Type</strong></TableCell>
-                <TableCell><strong>Default</strong></TableCell>
-                <TableCell><strong>Description</strong></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>showBranchDots</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show branch indicator dots in header</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>showBranchNames</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show branch names in header</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>showLaneLines</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show vertical lane lines</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>showEdges</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show edges connecting nodes</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>showRowBackgrounds</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show node background circles</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>showNodeLabels</TableCell>
-                <TableCell>boolean</TableCell>
-                <TableCell>true</TableCell>
-                <TableCell>Show node labels</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box
+          component="pre"
+          sx={{ bgcolor: "#f5f5f5", p: 2, borderRadius: 1, overflow: "auto" }}
+        >
+          <code>{`<GridGraph nodes={nodes} edges={edges} className="my-graph">
+  <GridGraph.Header>
+    <GridGraph.BranchDots />
+    <GridGraph.BranchNames className="font-bold" />
+  </GridGraph.Header>
+  <GridGraph.Content>
+    <GridGraph.LaneLines />
+    <GridGraph.RowBackgrounds 
+      selectedClassName="bg-blue-100"
+      hoveredClassName="bg-gray-50"
+    />
+    <GridGraph.Edges />
+    <GridGraph.Nodes 
+      showLabels={true}
+      labelClassName="text-sm"
+    />
+  </GridGraph.Content>
+</GridGraph>`}</code>
+        </Box>
       </Paper>
     </Box>
   );

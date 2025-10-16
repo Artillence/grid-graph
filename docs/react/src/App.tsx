@@ -41,7 +41,6 @@ function App() {
       >
         <AppBar position="static" elevation={1}>
           <Toolbar>
-
             <img
               src="logo.svg"
               alt="Grid Graph logo"
