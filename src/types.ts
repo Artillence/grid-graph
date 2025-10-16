@@ -43,6 +43,33 @@ export type ResolvedGraphConfig = Required<
   headerHeight?: string;
 };
 
+/** Configuration for auto-naming branches */
+export type AutoBranchConfig = {
+  /** Whether merge nodes (multiple parents) create new branches (default: true) */
+  mergeCreatesBranch?: boolean;
+  /** 
+   * Function to generate branch names.
+   * Defaults to the node ID in lowercase.
+   * 
+   * @param firstNodeId - The ID of the first node in this branch
+   * @param nodeMap - Map of all nodes in the graph (nodeId -> Node)
+   * @returns The name for this branch
+   */
+  nameBranch?: (firstNodeId: string, nodeMap: Map<string, Node>) => string;
+};
+
+/**
+ * Default branch naming function - uses the node ID in lowercase
+ */
+const defaultNameBranch = (firstNodeId: string) => firstNodeId.toLowerCase();
+
+export type ResolvedAutoBranchConfig = Required<AutoBranchConfig>;
+
+export const resolveAutoBranchConfig = (config: AutoBranchConfig): ResolvedAutoBranchConfig => ({
+  mergeCreatesBranch: config.mergeCreatesBranch ?? true,
+  nameBranch: config.nameBranch ?? defaultNameBranch,
+});
+
 /** Props for the main GridGraph component */
 export type GraphProps = {
   /** Array of nodes to display */
@@ -63,8 +90,8 @@ export type GraphProps = {
   branchOrder?: string[];
   /** Custom inline styles for the root container */
   style?: React.CSSProperties;
-  /** Auto-name branches after their first node (default: false) */
-  autoNameBranches?: boolean;
+  /** Auto-name branches. Pass true for defaults or an object to configure behavior */
+  autoBranches?: boolean | AutoBranchConfig;
 };
 
 export type LayoutData = {

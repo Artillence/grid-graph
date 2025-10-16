@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, ReactNode } from "react";
-import { GraphProps, LayoutData } from "./types";
+import { GraphProps, LayoutData, resolveAutoBranchConfig } from "./types";
 import { DEFAULT_CONFIG } from "./constants";
 import { computeHeaderHeight } from "./utils";
 import { useGraphLayout, useEdgePaths } from "./hooks";
@@ -61,7 +61,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   style: userStyle,
   onReorderBranches: onReorderBranches_,
   branchOrder: branchOrder_,
-  autoNameBranches = false,
+  autoBranches,
   children,
 }) => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -76,12 +76,19 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     colors: config_?.colors ?? DEFAULT_CONFIG.colors,
   };
 
+  // Resolve autoBranches config with defaults
+  const autoBranchConfig = autoBranches
+    ? resolveAutoBranchConfig(
+        typeof autoBranches === 'boolean' ? {} : autoBranches
+      )
+    : undefined;
+
   const layoutData = useGraphLayout(
     nodes,
     edges,
     branchOrder_,
     config.colors ?? DEFAULT_CONFIG.colors,
-    autoNameBranches,
+    autoBranchConfig,
   );
 
   const { parentMap } = buildGraphMaps(nodes, edges);

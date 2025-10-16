@@ -96,11 +96,12 @@ export default function ReferencePage() {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>autoNameBranches</TableCell>
-                <TableCell>boolean</TableCell>
+                <TableCell>autoBranches</TableCell>
+                <TableCell>boolean | AutoBranchConfig</TableCell>
                 <TableCell>No</TableCell>
                 <TableCell>
-                  Auto-name branches after their first node. When true, no branch properties are required on nodes (default: false)
+                  Enable auto-naming of branches. When true, uses default behavior (merges create branches, names from first node). 
+                  Pass AutoBranchConfig object to customize: mergeCreatesBranch (boolean) and nameBranch function
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -109,6 +110,55 @@ export default function ReferencePage() {
                 <TableCell>No</TableCell>
                 <TableCell>
                   Custom inline styles for the root container
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold">
+          AutoBranchConfig
+        </Typography>
+        <Typography variant="body2" paragraph color="text.secondary">
+          Configuration object for auto-branch behavior
+        </Typography>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <strong>Property</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Type</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Default</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Description</strong>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>mergeCreatesBranch</TableCell>
+                <TableCell>boolean</TableCell>
+                <TableCell>true</TableCell>
+                <TableCell>
+                  Whether merge nodes (nodes with multiple parents) create new branches. 
+                  When false, merge continues on the parent branch with shortest remaining depth.
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>nameBranch</TableCell>
+                <TableCell>(firstNodeId: string, nodeMap: Map&lt;string, Node&gt;) =&gt; string</TableCell>
+                <TableCell>(id) =&gt; id.toLowerCase()</TableCell>
+                <TableCell>
+                  Function to generate branch names.
+                  Receives the first node's ID and a map of all nodes. Must return unique branch names.
                 </TableCell>
               </TableRow>
             </TableBody>

@@ -32,24 +32,25 @@ export function topologicalSort(
   inDegree: Map<string, number>,
 ): string[] {
   const result: string[] = [];
-  const visited = new Set<string>();
+  const tempInDegree = new Map(inDegree);
+  
+  // Start with all nodes that have no incoming edges
+  const queue: string[] = nodes
+    .filter((node) => tempInDegree.get(node.id) === 0)
+    .map((node) => node.id);
 
-  for (const node of nodes) {
-    if (!visited.has(node.id) && inDegree.get(node.id) === 0) {
-      const queue = [node.id];
-      visited.add(node.id);
-      let head = 0;
+  while (queue.length > 0) {
+    const nodeId = queue.shift()!;
+    result.push(nodeId);
 
-      while (head < queue.length) {
-        const nodeId = queue[head++];
-        result.push(nodeId);
-
-        for (const childId of childMap.get(nodeId) || []) {
-          if (!visited.has(childId)) {
-            visited.add(childId);
-            queue.push(childId);
-          }
-        }
+    // Process all children of current node
+    for (const childId of childMap.get(nodeId) || []) {
+      const newDegree = tempInDegree.get(childId)! - 1;
+      tempInDegree.set(childId, newDegree);
+      
+      // If child now has no incoming edges, add it to queue
+      if (newDegree === 0) {
+        queue.push(childId);
       }
     }
   }

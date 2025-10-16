@@ -43,7 +43,7 @@ function GraphCard({
 
     case "no-header":
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }} >
+        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
           <GridGraph.Content>
             <GridGraph.LaneLines />
             <GridGraph.RowBackgrounds />
@@ -91,7 +91,17 @@ function GraphCard({
 
     case "auto-name":
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges} autoNameBranches style={{ width: "100%" }}>
+        <GridGraph
+          nodes={nodes}
+          edges={edges}
+          autoBranches={{
+            mergeCreatesBranch: false,
+            nameBranch: (name) => {
+              return name.toUpperCase();
+            },
+          }}
+          style={{ width: "100%" }}
+        >
           <GridGraph.Header>
             <GridGraph.BranchDots />
             <GridGraph.BranchNames />
@@ -106,7 +116,7 @@ function GraphCard({
       );
       codeString =
         customCode ||
-        `<GridGraph nodes={nodes} edges={edges} autoNameBranches style={{ width: "100%" }}>
+        `<GridGraph nodes={nodes} edges={edges} autoBranches style={{ width: "100%" }}>
   <GridGraph.Header>
     <GridGraph.BranchDots />
     <GridGraph.BranchNames />
@@ -300,7 +310,6 @@ export default function ExamplesPage() {
         { id: "a", label: "Node A", branch: "zone-1" },
         { id: "b", label: "Node B" },
         { id: "c", label: "Node C", branch: "zone-2" },
-        { id: "d", label: "Node D" },
         { id: "e", label: "Node E", branch: "zone-2" },
         { id: "f", label: "Node F", branch: "zone-3" },
         { id: "g", label: "Node G" },
@@ -347,9 +356,9 @@ export default function ExamplesPage() {
       ],
     },
     {
-      title: "Auto-Named Branches",
+      title: "Auto-Branches",
       description:
-        "Using autoNameBranches mode, branches are automatically named after their first node. No need to specify branch properties on nodes!",
+        "Using autoBranches mode, branches are automatically named after their first node. No need to specify branch properties on nodes!",
       composition: "auto-name" as const,
       nodes: [
         { id: "start", label: "Start" },
@@ -370,6 +379,29 @@ export default function ExamplesPage() {
         { id: "e6", source: "test-x", target: "merge" },
         { id: "e7", source: "test-y", target: "merge" },
         { id: "e8", source: "merge", target: "deploy" },
+      ],
+    },
+    {
+      title: "Review Cycle Workflow (Auto-Named with name transform)",
+      description:
+        "Multiple branches from a single node. Uses autoBranches to avoid manual branch naming - branches are automatically named after their first node.",
+      composition: "auto-name" as const,
+      nodes: [
+        { id: "review_cycle", label: "Review Cycle Starts" },
+        { id: "reviewer_pairings", label: "Reviewer Pairings" },
+        { id: "questionnaires_sent", label: "Questionnaires Sent" },
+        { id: "give_feedback", label: "Give Feedback" },
+        { id: "review_conversation", label: "Review Conversation" },
+      ],
+      edges: [
+        { id: "e1", source: "review_cycle", target: "reviewer_pairings" },
+        { id: "e2", source: "review_cycle", target: "give_feedback" },
+        {
+          id: "e3",
+          source: "reviewer_pairings",
+          target: "review_conversation",
+        },
+        { id: "e4", source: "questionnaires_sent", target: "give_feedback" },
       ],
     },
   ];

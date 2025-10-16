@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Node, Edge, LayoutData } from "../types";
+import { Node, Edge, LayoutData, ResolvedAutoBranchConfig } from "../types";
 import { validateAndSort } from "../validation";
 import { calculateLayout } from "../layout";
 import { DEFAULT_CONFIG } from "../constants";
@@ -9,18 +9,18 @@ export function useGraphLayout(
   edges: Edge[],
   branchOrder?: string[],
   colors: string[] = DEFAULT_CONFIG.colors,
-  autoNameBranches: boolean = false,
+  autoBranchConfig?: ResolvedAutoBranchConfig,
 ): LayoutData {
   return useMemo((): LayoutData => {
     try {
-      const sortedIds = validateAndSort(nodes, edges, autoNameBranches);
+      const sortedIds = validateAndSort(nodes, edges, !!autoBranchConfig);
       const layout = calculateLayout(
         nodes,
         edges,
         sortedIds,
         colors,
         branchOrder,
-        autoNameBranches,
+        autoBranchConfig,
       );
       return { ...layout, error: null };
     } catch (e: unknown) {
@@ -35,5 +35,5 @@ export function useGraphLayout(
         error: (e as Error).message,
       };
     }
-  }, [nodes, edges, branchOrder, colors, autoNameBranches]);
+  }, [nodes, edges, branchOrder, colors, autoBranchConfig]);
 }
