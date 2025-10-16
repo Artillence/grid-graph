@@ -5,7 +5,7 @@ import { GridGraph } from "grid-graph";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const quickStartNodes = [
+const nodes = [
   { id: "1", label: "Initial", branch: "main" },
   { id: "2", label: "Feature A", branch: "feature-a" },
   { id: "3", label: "Feature B", branch: "feature-b" },
@@ -15,7 +15,7 @@ const quickStartNodes = [
   { id: "7", label: "Fix Applied" },
 ];
 
-const quickStartEdges = [
+const edges = [
   { id: "e1", source: "1", target: "2" },
   { id: "e2", source: "2", target: "4" },
   { id: "e3", source: "4", target: "5" },
@@ -89,7 +89,11 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             bgcolor: "#fafafa",
           }}
         >
-          <GridGraph nodes={quickStartNodes} edges={quickStartEdges}>
+          <GridGraph
+            nodes={nodes}
+            edges={edges}
+            style={{ width: "100%" }}
+          >
             <GridGraph.Header>
               <GridGraph.BranchDots />
               <GridGraph.BranchNames />
@@ -102,7 +106,6 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             </GridGraph.Content>
           </GridGraph>
         </Box>
-
         <Typography variant="body1" paragraph></Typography>
         <SyntaxHighlighter
           language="typescript"

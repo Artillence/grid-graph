@@ -90,22 +90,34 @@ Grid Graph uses a compound component pattern for maximum flexibility:
 ### Example: Custom Styling
 
 ```tsx
-<GridGraph nodes={nodes} edges={edges} className="my-graph">
-  <GridGraph.Header className="custom-header">
-    <GridGraph.BranchDots />
+<GridGraph nodes={nodes} edges={edges} className="my-graph" style={{ padding: "20px" width: "100%" }}>
+  <GridGraph.Header className="custom-header" style={{ backgroundColor: "#f5f5f5" }}>
+    <GridGraph.BranchDots style={{ opacity: 0.8 }} />
     <GridGraph.BranchNames className="font-bold" />
   </GridGraph.Header>
-  <GridGraph.Content>
+  <GridGraph.Content style={{ border: "1px solid #ddd" }}>
     <GridGraph.LaneLines className="opacity-50" />
     <GridGraph.RowBackgrounds
       selectedClassName="bg-blue-100"
       hoveredClassName="bg-gray-50"
     />
-    <GridGraph.Edges />
+    <GridGraph.Edges pathClassName="custom-edge" />
     <GridGraph.Nodes labelClassName="text-sm" showLabels={true} />
   </GridGraph.Content>
 </GridGraph>
 ```
+
+## Styling
+
+All components accept both `className` and `style` props for maximum flexibility:
+
+- **`className`** - For CSS frameworks (Tailwind, CSS modules) and reusable styles
+- **`style`** - For dynamic or one-off inline styles
+
+Some components also accept specialized className props:
+- `RowBackgrounds`: `selectedClassName`, `hoveredClassName`
+- `Edges`: `pathClassName`
+- `Nodes`: `labelClassName`, `selectedLabelClassName`
 
 ## Validation
 

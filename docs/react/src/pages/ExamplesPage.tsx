@@ -26,14 +26,14 @@ function GraphCard({
   switch (composition) {
     case "minimal":
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges}>
+        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
           <GridGraph.Content>
             <GridGraph.Edges />
             <GridGraph.Nodes />
           </GridGraph.Content>
         </GridGraph>
       );
-      codeString = `<GridGraph nodes={nodes} edges={edges}>
+      codeString = `<GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
   <GridGraph.Content>
     <GridGraph.Edges />
     <GridGraph.Nodes />
@@ -43,7 +43,7 @@ function GraphCard({
 
     case "no-header":
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges}>
+        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }} >
           <GridGraph.Content>
             <GridGraph.LaneLines />
             <GridGraph.RowBackgrounds />
@@ -52,7 +52,7 @@ function GraphCard({
           </GridGraph.Content>
         </GridGraph>
       );
-      codeString = `<GridGraph nodes={nodes} edges={edges}>
+      codeString = `<GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
   <GridGraph.Content>
     <GridGraph.LaneLines />
     <GridGraph.RowBackgrounds />
@@ -64,7 +64,7 @@ function GraphCard({
 
     case "custom":
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges}>
+        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
           <GridGraph.Header>
             <GridGraph.BranchNames />
           </GridGraph.Header>
@@ -77,7 +77,7 @@ function GraphCard({
       );
       codeString =
         customCode ||
-        `<GridGraph nodes={nodes} edges={edges}>
+        `<GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
   <GridGraph.Header>
     <GridGraph.BranchNames />
   </GridGraph.Header>
@@ -91,7 +91,7 @@ function GraphCard({
 
     default: // 'full'
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges}>
+        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
           <GridGraph.Header>
             <GridGraph.BranchDots />
             <GridGraph.BranchNames />
@@ -104,7 +104,7 @@ function GraphCard({
           </GridGraph.Content>
         </GridGraph>
       );
-      codeString = `<GridGraph nodes={nodes} edges={edges}>
+      codeString = `<GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
   <GridGraph.Header>
     <GridGraph.BranchDots />
     <GridGraph.BranchNames />

@@ -48,6 +48,7 @@ const useGridGraphContext = () => {
 
 type GridGraphProps = GraphProps & {
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 };
 
 const GridGraphRoot: React.FC<GridGraphProps> = ({
@@ -57,6 +58,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   verticalLabels = true,
   config: config_,
   className,
+  style: userStyle,
   onReorderBranches: onReorderBranches_,
   branchOrder: branchOrder_,
   children,
@@ -186,7 +188,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   return (
     <GridGraphContext.Provider value={contextValue}>
       <div
-        className={className || "gg__container"}
+        className={`gg__container ${className || ''}`}
         style={
           {
             // Only set computed layout values as CSS variables
@@ -194,6 +196,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
             "--gg-header-height": headerHeight,
             "--gg-content-height": `${contentHeight}px`,
             "--gg-graph-width": `${graphWidth}px`,
+            ...userStyle,
           } as React.CSSProperties
         }
       >
@@ -204,12 +207,13 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
 };
 
 // Header Component - renders children
-const Header: React.FC<{ children?: ReactNode; className?: string }> = ({
+const Header: React.FC<{ children?: ReactNode; className?: string; style?: React.CSSProperties }> = ({
   children,
   className,
+  style,
 }) => {
   return (
-    <div className={className || "gg__header"}>
+    <div className={`gg__header ${className || ''}`} style={style}>
       {children}
     </div>
   );
@@ -218,15 +222,17 @@ const Header: React.FC<{ children?: ReactNode; className?: string }> = ({
 Header.displayName = "GridGraph.Header";
 
 // Content Component - renders children
-const Content: React.FC<{ children?: ReactNode; className?: string }> = ({
+const Content: React.FC<{ children?: ReactNode; className?: string; style?: React.CSSProperties }> = ({
   children,
   className,
+  style,
 }) => {
   const { containerRef } = useGridGraphContext();
 
   return (
     <div
-      className={className || "gg__content"}
+      className={`gg__content ${className || ''}`}
+      style={style}
       ref={containerRef}
     >
       {children}
@@ -237,7 +243,7 @@ const Content: React.FC<{ children?: ReactNode; className?: string }> = ({
 Content.displayName = "GridGraph.Content";
 
 // Primitive components wrapped to use context
-const BranchDots: React.FC<{ className?: string }> = ({ className }) => {
+const BranchDots: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => {
   const { layoutData, config, onReorderBranches } = useGridGraphContext();
 
   return (
@@ -247,13 +253,14 @@ const BranchDots: React.FC<{ className?: string }> = ({ className }) => {
       config={config}
       onReorderBranches={onReorderBranches}
       className={className}
+      style={style}
     />
   );
 };
 
 BranchDots.displayName = "GridGraph.BranchDots";
 
-const BranchNames: React.FC<{ className?: string }> = ({ className }) => {
+const BranchNames: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => {
   const { layoutData, config, verticalLabels } = useGridGraphContext();
 
   return (
@@ -262,13 +269,14 @@ const BranchNames: React.FC<{ className?: string }> = ({ className }) => {
       verticalLabels={verticalLabels}
       config={config}
       className={className}
+      style={style}
     />
   );
 };
 
 BranchNames.displayName = "GridGraph.BranchNames";
 
-const LaneLines: React.FC<{ className?: string }> = ({ className }) => {
+const LaneLines: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => {
   const { layoutData, config } = useGridGraphContext();
 
   return (
@@ -276,6 +284,7 @@ const LaneLines: React.FC<{ className?: string }> = ({ className }) => {
       maxCol={layoutData.maxCol}
       config={config}
       className={className}
+      style={style}
     />
   );
 };
@@ -284,9 +293,10 @@ LaneLines.displayName = "GridGraph.LaneLines";
 
 const RowBackgrounds: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   selectedClassName?: string;
   hoveredClassName?: string;
-}> = ({ className, selectedClassName, hoveredClassName }) => {
+}> = ({ className, style, selectedClassName, hoveredClassName }) => {
   const { layoutData, selected, hovered, config } = useGridGraphContext();
 
   return (
@@ -296,6 +306,7 @@ const RowBackgrounds: React.FC<{
       hovered={hovered}
       rowHeight={config.rowHeight}
       className={className}
+      style={style}
       selectedClassName={selectedClassName}
       hoveredClassName={hoveredClassName}
     />
@@ -306,14 +317,16 @@ RowBackgrounds.displayName = "GridGraph.RowBackgrounds";
 
 const Edges: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   pathClassName?: string;
-}> = ({ className, pathClassName }) => {
+}> = ({ className, style, pathClassName }) => {
   const { edgePaths } = useGridGraphContext();
 
   return (
     <PrimitiveEdges
       edgePaths={edgePaths}
       className={className}
+      style={style}
       pathClassName={pathClassName}
     />
   );
@@ -322,10 +335,12 @@ const Edges: React.FC<{
 Edges.displayName = "GridGraph.Edges";
 
 const Nodes: React.FC<{
+  className?: string;
+  style?: React.CSSProperties;
   showLabels?: boolean;
   labelClassName?: string;
   selectedLabelClassName?: string;
-}> = ({ showLabels = true, labelClassName, selectedLabelClassName }) => {
+}> = ({ className, style, showLabels = true, labelClassName, selectedLabelClassName }) => {
   const {
     nodes,
     layoutData,
@@ -354,6 +369,8 @@ const Nodes: React.FC<{
       config={config}
       graphWidth={graphWidth}
       showLabels={showLabels}
+      className={className}
+      style={style}
       labelClassName={labelClassName}
       selectedLabelClassName={selectedLabelClassName}
     />

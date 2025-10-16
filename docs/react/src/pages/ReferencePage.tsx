@@ -95,6 +95,14 @@ export default function ReferencePage() {
                   Display branch labels vertically (default: true)
                 </TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell>style</TableCell>
+                <TableCell>React.CSSProperties</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>
+                  Custom inline styles for the root container
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -111,7 +119,8 @@ export default function ReferencePage() {
           sx={{ mb: 2 }}
         >
           GridGraph uses a compound component pattern. Compose the graph by
-          rendering only the components you need.
+          rendering only the components you need. All components accept{" "}
+          <code>className</code> and <code>style</code> props.
         </Typography>
         <TableContainer>
           <Table>
@@ -131,33 +140,33 @@ export default function ReferencePage() {
             <TableBody>
               <TableRow>
                 <TableCell>GridGraph.Header</TableCell>
-                <TableCell>className?, children?</TableCell>
+                <TableCell>className?, style?, children?</TableCell>
                 <TableCell>Header container for branch decorations</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.Content</TableCell>
-                <TableCell>className?, children?</TableCell>
+                <TableCell>className?, style?, children?</TableCell>
                 <TableCell>Main content container for graph elements</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.BranchDots</TableCell>
-                <TableCell>className?</TableCell>
+                <TableCell>className?, style?</TableCell>
                 <TableCell>Branch indicator dots (use in Header)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.BranchNames</TableCell>
-                <TableCell>className?</TableCell>
+                <TableCell>className?, style?</TableCell>
                 <TableCell>Branch name labels (use in Header)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.LaneLines</TableCell>
-                <TableCell>className?</TableCell>
+                <TableCell>className?, style?</TableCell>
                 <TableCell>Vertical lane lines (use in Content)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.RowBackgrounds</TableCell>
                 <TableCell>
-                  className?, selectedClassName?, hoveredClassName?
+                  className?, style?, selectedClassName?, hoveredClassName?
                 </TableCell>
                 <TableCell>
                   Row background highlights (use in Content)
@@ -165,7 +174,7 @@ export default function ReferencePage() {
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.Edges</TableCell>
-                <TableCell>className?, pathClassName?</TableCell>
+                <TableCell>className?, style?, pathClassName?</TableCell>
                 <TableCell>
                   Connection lines between nodes (use in Content)
                 </TableCell>
@@ -173,7 +182,7 @@ export default function ReferencePage() {
               <TableRow>
                 <TableCell>GridGraph.Nodes</TableCell>
                 <TableCell>
-                  showLabels?, labelClassName?, selectedLabelClassName?
+                  className?, style?, showLabels?, labelClassName?, selectedLabelClassName?
                 </TableCell>
                 <TableCell>
                   Graph nodes with optional labels (use in Content)
