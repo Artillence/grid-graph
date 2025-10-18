@@ -310,6 +310,7 @@ export default function ExamplesPage() {
         { id: "a", label: "Node A", branch: "zone-1" },
         { id: "b", label: "Node B" },
         { id: "c", label: "Node C", branch: "zone-2" },
+        { id: "d", label: "Node D", branch: "zone-1" },
         { id: "e", label: "Node E", branch: "zone-2" },
         { id: "f", label: "Node F", branch: "zone-3" },
         { id: "g", label: "Node G" },

@@ -4,12 +4,12 @@ export function detectCycles(
   nodes: Node[],
   childMap: Map<string, string[]>,
   inDegree: Map<string, number>,
-): boolean {
+): { hasCycle: boolean; nodesInCycle: string[] } {
   const tempInDegree = new Map(inDegree);
   const queue = nodes
     .map((n) => n.id)
     .filter((id) => tempInDegree.get(id) === 0);
-  const visited = [];
+  const visited: string[] = [];
 
   while (queue.length > 0) {
     const nodeId = queue.shift()!;
@@ -23,7 +23,12 @@ export function detectCycles(
     }
   }
 
-  return visited.length !== nodes.length;
+  const hasCycle = visited.length !== nodes.length;
+  const nodesInCycle = hasCycle
+    ? nodes.map((n) => n.id).filter((id) => !visited.includes(id))
+    : [];
+
+  return { hasCycle, nodesInCycle };
 }
 
 export function topologicalSort(

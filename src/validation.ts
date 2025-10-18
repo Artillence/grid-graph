@@ -48,6 +48,26 @@ export function validateGraph(
 export function validateAndSort(nodes: Node[], edges: Edge[], autoNameBranches: boolean = false): string[] {
   if (nodes.length === 0) return [];
 
+  // Validate that all edges reference existing nodes
+  const nodeIds = new Set(nodes.map(n => n.id));
+  const missingNodes = new Set<string>();
+  
+  for (const edge of edges) {
+    if (!nodeIds.has(edge.source)) {
+      missingNodes.add(edge.source);
+    }
+    if (!nodeIds.has(edge.target)) {
+      missingNodes.add(edge.target);
+    }
+  }
+  
+  if (missingNodes.size > 0) {
+    throw new Error(
+      `Edges reference non-existent nodes: ${Array.from(missingNodes).join(", ")}. ` +
+      `All nodes referenced in edges must be defined in the nodes array.`
+    );
+  }
+
   const { nodeMap, parentMap, childMap, inDegree } = buildGraphMaps(
     nodes,
     edges,
@@ -55,8 +75,12 @@ export function validateAndSort(nodes: Node[], edges: Edge[], autoNameBranches: 
 
   validateGraph(nodeMap, parentMap, childMap, autoNameBranches);
 
-  if (detectCycles(nodes, childMap, inDegree)) {
-    throw new Error("Graph contains a cycle and is not a valid DAG.");
+  const cycleResult = detectCycles(nodes, childMap, inDegree);
+  if (cycleResult.hasCycle) {
+    const nodeList = cycleResult.nodesInCycle.length > 0 
+      ? ` Nodes involved: ${cycleResult.nodesInCycle.join(", ")}`
+      : "";
+    throw new Error(`Graph contains a cycle and is not a valid DAG.${nodeList}`);
   }
 
   return topologicalSort(nodes, childMap, inDegree);
