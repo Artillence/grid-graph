@@ -82,10 +82,46 @@ export default function ReferencePage() {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>onSelect</TableCell>
+                <TableCell>onClick</TableCell>
                 <TableCell>(id: string) =&gt; void</TableCell>
                 <TableCell>No</TableCell>
-                <TableCell>Callback when a node is selected</TableCell>
+                <TableCell>Callback when a node is clicked</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>onNodeDoubleClick</TableCell>
+                <TableCell>(id: string) =&gt; void</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Callback when a node is double-clicked</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>onNodeContextMenu</TableCell>
+                <TableCell>(id: string, event: MouseEvent) =&gt; void</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Callback when a node is right-clicked</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>onNodeMouseOver</TableCell>
+                <TableCell>(id: string) =&gt; void</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Callback when mouse enters a node</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>onNodeMouseOut</TableCell>
+                <TableCell>(id: string) =&gt; void</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Callback when mouse leaves a node</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>selectedNodeId</TableCell>
+                <TableCell>string | null</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Controlled selected node ID</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>onSelectedNodeChange</TableCell>
+                <TableCell>(id: string | null) =&gt; void</TableCell>
+                <TableCell>No</TableCell>
+                <TableCell>Callback when selected node changes (controlled mode)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>verticalLabels</TableCell>
@@ -198,8 +234,8 @@ export default function ReferencePage() {
             <TableBody>
               <TableRow>
                 <TableCell>GridGraph.Header</TableCell>
-                <TableCell>className?, style?, children?</TableCell>
-                <TableCell>Header container for branch decorations</TableCell>
+                <TableCell>className?, style?, onClick?, children?</TableCell>
+                <TableCell>Header container for branch decorations. Pass onClick to make it clickable.</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>GridGraph.Content</TableCell>

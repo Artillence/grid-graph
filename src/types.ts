@@ -77,7 +77,19 @@ export type GraphProps = {
   /** Array of edges connecting nodes */
   edges: Edge[];
   /** Callback when a node is clicked */
-  onSelect?: (id: string) => void;
+  onClick?: (id: string) => void;
+  /** Callback when a node is double-clicked */
+  onNodeDoubleClick?: (id: string) => void;
+  /** Callback when a node is right-clicked */
+  onNodeContextMenu?: (id: string, event: React.MouseEvent) => void;
+  /** Callback when mouse enters a node */
+  onNodeMouseOver?: (id: string) => void;
+  /** Callback when mouse leaves a node */
+  onNodeMouseOut?: (id: string) => void;
+  /** Controlled selected node ID (for controlled component pattern) */
+  selectedNodeId?: string | null;
+  /** Callback when selected node changes (for controlled component pattern) */
+  onSelectedNodeChange?: (id: string | null) => void;
   /** Display branch labels vertically (default: true) */
   verticalLabels?: boolean;
   /** Configuration for dimensions and styling */

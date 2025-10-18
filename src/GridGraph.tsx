@@ -27,6 +27,11 @@ type GridGraphContextValue = {
   verticalLabels: boolean;
   graphWidth: number;
   onNodeClick: (id: string) => void;
+  onNodeDoubleClick?: (id: string) => void;
+  onNodeContextMenu?: (id: string, event: React.MouseEvent) => void;
+  onNodeMouseOver?: (id: string) => void;
+  onNodeMouseOut?: (id: string) => void;
+  onHeaderClick?: () => void;
   onReorderBranches?: (newOrder: string[]) => void;
   nodes: GraphProps["nodes"];
   edges: GraphProps["edges"];
@@ -54,7 +59,13 @@ type GridGraphProps = GraphProps & {
 const GridGraphRoot: React.FC<GridGraphProps> = ({
   nodes,
   edges,
-  onSelect,
+  onClick,
+  onNodeDoubleClick,
+  onNodeContextMenu,
+  onNodeMouseOver,
+  onNodeMouseOut,
+  selectedNodeId,
+  onSelectedNodeChange,
   verticalLabels = true,
   config: config_,
   className,
@@ -64,7 +75,11 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   autoBranches,
   children,
 }) => {
-  const [selected, setSelected] = useState<string | null>(null);
+  // Use controlled component pattern if selectedNodeId is provided
+  const isControlled = selectedNodeId !== undefined;
+  const [internalSelected, setInternalSelected] = useState<string | null>(null);
+  const selected = isControlled ? selectedNodeId : internalSelected;
+  
   const [hovered, setHovered] = useState<string | null>(null);
 
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -171,9 +186,39 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     }
   });
 
+  const handleSetSelected = (id: string | null) => {
+    if (isControlled) {
+      onSelectedNodeChange?.(id);
+    } else {
+      setInternalSelected(id);
+    }
+  };
+
   const handleNodeClick = (id: string) => {
-    setSelected(id);
-    onSelect?.(id);
+    handleSetSelected(id);
+    onClick?.(id);
+  };
+
+  const handleNodeDoubleClick = (id: string) => {
+    onNodeDoubleClick?.(id);
+  };
+
+  const handleNodeContextMenu = (id: string, event: React.MouseEvent) => {
+    onNodeContextMenu?.(id, event);
+  };
+
+  const handleNodeMouseOver = (id: string) => {
+    setHovered(id);
+    onNodeMouseOver?.(id);
+  };
+
+  const handleNodeMouseOut = (id: string) => {
+    setHovered(null);
+    onNodeMouseOut?.(id);
+  };
+
+  const handleHeaderClick = () => {
+    handleSetSelected(null);
   };
 
   const contextValue: GridGraphContextValue = {
@@ -181,7 +226,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     edgePaths,
     selected,
     hovered,
-    setSelected,
+    setSelected: handleSetSelected,
     setHovered,
     nodeRefs,
     containerRef,
@@ -189,6 +234,11 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     verticalLabels,
     graphWidth,
     onNodeClick: handleNodeClick,
+    onNodeDoubleClick: handleNodeDoubleClick,
+    onNodeContextMenu: handleNodeContextMenu,
+    onNodeMouseOver: handleNodeMouseOver,
+    onNodeMouseOut: handleNodeMouseOut,
+    onHeaderClick: handleHeaderClick,
     onReorderBranches: onReorderBranches_,
     nodes,
     edges,
@@ -216,13 +266,37 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
 };
 
 // Header Component - renders children
-const Header: React.FC<{ children?: ReactNode; className?: string; style?: React.CSSProperties }> = ({
+const Header: React.FC<{ 
+  children?: ReactNode; 
+  className?: string; 
+  style?: React.CSSProperties;
+  onClick?: () => void;
+}> = ({
   children,
   className,
   style,
+  onClick,
 }) => {
+  const { onHeaderClick } = useGridGraphContext();
+  const [isHovered, setIsHovered] = useState(false);
+
+  const isClickable = onClick !== undefined;
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+      onHeaderClick?.();
+    }
+  };
+
   return (
-    <div className={`gg__header ${className || ''}`} style={style}>
+    <div 
+      className={`gg__header ${className || ''} ${isClickable ? 'gg__header-clickable' : ''} ${isHovered && isClickable ? 'gg__header-hovered' : ''}`}
+      style={style}
+      onClick={handleClick}
+      onMouseEnter={() => isClickable && setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {children}
     </div>
   );
@@ -357,7 +431,10 @@ const Nodes: React.FC<{
     hovered,
     nodeRefs,
     onNodeClick,
-    setHovered,
+    onNodeDoubleClick,
+    onNodeContextMenu,
+    onNodeMouseOver,
+    onNodeMouseOut,
     config,
     graphWidth,
   } = useGridGraphContext();
@@ -373,8 +450,10 @@ const Nodes: React.FC<{
       hovered={hovered}
       nodeRefs={nodeRefs}
       onNodeClick={onNodeClick}
-      onMouseEnter={setHovered}
-      onMouseLeave={() => setHovered(null)}
+      onNodeDoubleClick={onNodeDoubleClick}
+      onNodeContextMenu={onNodeContextMenu}
+      onMouseEnter={(id) => onNodeMouseOver?.(id)}
+      onMouseLeave={(id) => onNodeMouseOut?.(id)}
       config={config}
       graphWidth={graphWidth}
       showLabels={showLabels}

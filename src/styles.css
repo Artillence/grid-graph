@@ -8,13 +8,27 @@
   height: calc(var(--gg-header-height) + var(--gg-content-height));
   min-width: var(--gg-graph-width);
   width: fit-content;
+  
+  /* Header padding */
+  --gg-header-padding-top: 0.5rem;
 }
 
 .gg__header {
   position: relative;
   width: 100%;
   height: var(--gg-header-height);
+  padding-top: var(--gg-header-padding-top);
+  transition: background-color 0.2s ease;
 }
+
+.gg__header-clickable {
+  cursor: pointer;
+}
+
+.gg__header-hovered {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
 
 .gg__content {
   position: relative;
@@ -34,7 +48,7 @@
 
 .gg__branch-dot {
   position: absolute;
-  top: 0;
+  top: var(--gg-header-padding-top);
   height: 0.75rem;
   width: 0.75rem;
   border-radius: 9999px;
@@ -70,7 +84,7 @@
 .gg__lane-lines-container {
   pointer-events: none;
   position: absolute;
-  top: calc(-1 * var(--gg-header-height));
+  top: calc(-1 * var(--gg-header-height) + var(--gg-header-padding-top));
   bottom: 0;
   z-index: 1;
 }
@@ -142,8 +156,23 @@
 }
 
 .gg__node-label {
+  position: relative;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  display: inline-block;
+}
+
+/* Reserve space for bold font to prevent layout shift */
+.gg__node-label::after {
+  content: attr(data-label);
+  content: attr(data-label) / "";
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+  font-weight: 600;
+  display: block;
 }
 
 .gg__node-label-selected {
@@ -175,7 +204,7 @@
 .gg__branch-labels {
   pointer-events: none;
   position: absolute;
-  top: 1rem;
+  top: calc(1rem + var(--gg-header-padding-top));
   right: 0;
   left: 0;
   z-index: 20;

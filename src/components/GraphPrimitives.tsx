@@ -214,8 +214,10 @@ export const Nodes: React.FC<{
   hovered: string | null;
   nodeRefs: React.RefObject<Map<string, HTMLDivElement>>;
   onNodeClick: (id: string) => void;
+  onNodeDoubleClick?: (id: string) => void;
+  onNodeContextMenu?: (id: string, event: React.MouseEvent) => void;
   onMouseEnter: (id: string) => void;
-  onMouseLeave: () => void;
+  onMouseLeave: (id: string) => void;
   config: ResolvedGraphConfig;
   graphWidth: number;
   showLabels?: boolean;
@@ -233,6 +235,8 @@ export const Nodes: React.FC<{
   hovered,
   nodeRefs,
   onNodeClick,
+  onNodeDoubleClick,
+  onNodeContextMenu,
   onMouseEnter,
   onMouseLeave,
   config,
@@ -257,8 +261,15 @@ export const Nodes: React.FC<{
           key={node.id}
           className="gg__node"
           onClick={() => onNodeClick(node.id)}
+          onDoubleClick={() => onNodeDoubleClick?.(node.id)}
+          onContextMenu={(e) => {
+            if (onNodeContextMenu) {
+              e.preventDefault();
+              onNodeContextMenu(node.id, e);
+            }
+          }}
           onMouseEnter={() => onMouseEnter(node.id)}
-          onMouseLeave={onMouseLeave}
+          onMouseLeave={() => onMouseLeave(node.id)}
           style={{ height: config.rowHeight, top }}
         >
           <div
@@ -278,6 +289,7 @@ export const Nodes: React.FC<{
             <div
               style={{ marginLeft: config.labelLeftMargin }}
               className={`gg__node-label ${labelClassName || ''} ${isSelected ? selectedLabelClassName || "gg__node-label-selected" : ""}`}
+              data-label={typeof node.label === 'string' ? node.label : ''}
             >
               {node.label}
             </div>

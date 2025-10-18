@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   Switch,
   Alert,
+  Chip,
 } from "@mui/material";
 import { GridGraph } from "grid-graph";
 
@@ -72,6 +73,14 @@ interface GraphWithErrorHandlingProps {
   showRowBackgrounds: boolean;
   showNodeLabels: boolean;
   onError: (error: string | null) => void;
+  onHeaderClick?: () => void;
+  onNodeClick?: (id: string) => void;
+  onNodeDoubleClick?: (id: string) => void;
+  onNodeContextMenu?: (id: string, event: React.MouseEvent) => void;
+  onNodeMouseOver?: (id: string) => void;
+  onNodeMouseOut?: (id: string) => void;
+  selectedNodeId?: string | null;
+  onSelectedNodeChange?: (id: string | null) => void;
 }
 
 function GraphWithErrorHandling(props: GraphWithErrorHandlingProps) {
@@ -93,6 +102,14 @@ function GraphWithErrorHandling(props: GraphWithErrorHandlingProps) {
     showRowBackgrounds,
     showNodeLabels,
     onError,
+    onHeaderClick,
+    onNodeClick,
+    onNodeDoubleClick,
+    onNodeContextMenu,
+    onNodeMouseOver,
+    onNodeMouseOut,
+    selectedNodeId,
+    onSelectedNodeChange,
   } = props;
 
   const resetKey = JSON.stringify({ nodes, edges });
@@ -105,6 +122,13 @@ function GraphWithErrorHandling(props: GraphWithErrorHandlingProps) {
         branchOrder={branchOrder}
         onReorderBranches={onReorderBranches}
         verticalLabels={verticalLabels}
+        onClick={onNodeClick}
+        onNodeDoubleClick={onNodeDoubleClick}
+        onNodeContextMenu={onNodeContextMenu}
+        onNodeMouseOver={onNodeMouseOver}
+        onNodeMouseOut={onNodeMouseOut}
+        selectedNodeId={selectedNodeId}
+        onSelectedNodeChange={onSelectedNodeChange}
         config={{
           rowHeight,
           columnWidth,
@@ -114,7 +138,7 @@ function GraphWithErrorHandling(props: GraphWithErrorHandlingProps) {
         }}
         style={{ width: "100%" }}
       >
-        <GridGraph.Header>
+        <GridGraph.Header onClick={onHeaderClick}>
           {showBranchDots && <GridGraph.BranchDots />}
           {showBranchNames && <GridGraph.BranchNames />}
         </GridGraph.Header>
@@ -174,6 +198,23 @@ export default function PlaygroundPage() {
   const [showRowBackgrounds, setshowRowBackgrounds] = useState(true);
   const [showNodeLabels, setShowNodeLabels] = useState(true);
   const [verticalLabels, setVerticalLabels] = useState(true);
+  const [enableHeaderClick, setEnableHeaderClick] = useState(false);
+
+  // Event tracking
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [lastEvent, setLastEvent] = useState<{
+    type: string;
+    nodeId?: string;
+    timestamp: number;
+  } | null>(null);
+
+  const logEvent = (type: string, nodeId?: string) => {
+    setLastEvent({ type, nodeId, timestamp: Date.now() });
+  };
+
+  const handleHeaderClick = () => {
+    logEvent("headerClick");
+  };
 
   const handleNodesChange = (value: string) => {
     setNodesJson(value);
@@ -243,9 +284,39 @@ export default function PlaygroundPage() {
                 showRowBackgrounds={showRowBackgrounds}
                 showNodeLabels={showNodeLabels}
                 onError={setError}
+                selectedNodeId={selectedNode}
+                onSelectedNodeChange={setSelectedNode}
+                onHeaderClick={enableHeaderClick ? handleHeaderClick : undefined}
+                onNodeClick={(id) => logEvent("click", id)}
+                onNodeDoubleClick={(id) => logEvent("doubleClick", id)}
+                onNodeContextMenu={(id) => logEvent("contextMenu", id)}
+                onNodeMouseOver={(id) => logEvent("mouseOver", id)}
+                onNodeMouseOut={(id) => logEvent("mouseOut", id)}
               />
             </Box>
           </Paper>
+
+          {lastEvent && (
+            <Paper sx={{ p: 3, mt: 2, bgcolor: "#f5f5f5" }}>
+              <Typography variant="h6" gutterBottom>
+                Event Monitor
+              </Typography>
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                <Chip
+                  label={`Event: ${lastEvent.type}`}
+                  color="primary"
+                  size="small"
+                />
+                {lastEvent.nodeId && (
+                  <Chip
+                    label={`Node: ${lastEvent.nodeId}`}
+                    color="secondary"
+                    size="small"
+                  />
+                )}
+              </Box>
+            </Paper>
+          )}
 
           <Paper sx={{ p: 3, mt: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -401,6 +472,15 @@ export default function PlaygroundPage() {
                 />
               }
               label="Vertical Labels"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={enableHeaderClick}
+                  onChange={(e) => setEnableHeaderClick(e.target.checked)}
+                />
+              }
+              label="Header Clickable"
             />
           </Paper>
         </Grid>

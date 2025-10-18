@@ -1,15 +1,16 @@
 # Grid Graph
 
-React library for visualizing directed acyclic graphs with automatic branch detection and layout. Built with a composable compound component API.
+React library for visualizing directed acyclic graphs with automatic branch detection and layout.
 
 ## Features
 
-- 🎨 **Composable API** - Control what renders through component composition
-- 🎯 **Automatic branch detection** - Color-coded lanes with smart layout
-- 🔄 **Interactive branch reordering** - Drag and drop branches
-- 💅 **Fully customizable** - `className` props on every component
-- 📦 **TypeScript support** - Fully typed
-- ⚡ **Zero config** - Works out of the box with sensible defaults
+- 🎨 Composable component API
+- 🎯 Automatic branch detection and color-coded lanes
+- 🖱️ Rich event handling (click, double-click, context menu, hover)
+- 🎛️ Controlled & uncontrolled selection modes
+- 🔄 Drag-and-drop branch reordering
+- 💅 Fully customizable with className/style props
+- 📦 TypeScript support
 
 ## Installation
 
@@ -35,7 +36,11 @@ const edges = [
 
 function App() {
   return (
-    <GridGraph nodes={nodes} edges={edges}>
+    <GridGraph 
+      nodes={nodes} 
+      edges={edges}
+      onClick={(id) => console.log('Clicked:', id)}
+    >
       <GridGraph.Header>
         <GridGraph.BranchDots />
         <GridGraph.BranchNames />
@@ -51,126 +56,71 @@ function App() {
 }
 ```
 
-## Compound Components
+## Components
 
-Grid Graph uses a compound component pattern for maximum flexibility:
-
-### Root
-
-- `<GridGraph>` - Main container with context
-
-### Layout
-
-- `<GridGraph.Header>` - Header area for branch decorations
+**Layout:**
+- `<GridGraph>` - Root container
+- `<GridGraph.Header>` - Header for branch decorations (add `onClick` to make clickable)
 - `<GridGraph.Content>` - Main content area
 
-### Header Components
-
+**Header:**
 - `<GridGraph.BranchDots>` - Branch indicator dots
 - `<GridGraph.BranchNames>` - Branch labels
 
-### Content Components
-
+**Content:**
 - `<GridGraph.LaneLines>` - Vertical lane lines
 - `<GridGraph.RowBackgrounds>` - Row highlights
 - `<GridGraph.Edges>` - Connection lines
-- `<GridGraph.Nodes>` - Graph nodes
+- `<GridGraph.Nodes>` - Graph nodes with labels
 
-### Example: Minimal Graph
+All components accept `className` and `style` props.
+
+## Key Props
+
+### GridGraph
+- `nodes`, `edges` - Graph data (required)
+- `onClick` - Node click handler
+- `onNodeDoubleClick`, `onNodeContextMenu`, `onNodeMouseOver`, `onNodeMouseOut` - Event handlers
+- `selectedNodeId`, `onSelectedNodeChange` - Controlled selection
+- `onReorderBranches` - Enable drag-and-drop branch ordering
+- `autoBranches` - Auto-name branches (no need for `branch` property on nodes)
+- `config` - Customize dimensions, colors, etc.
+
+### Example: Controlled Selection
 
 ```tsx
-<GridGraph nodes={nodes} edges={edges}>
-  <GridGraph.Content>
-    <GridGraph.Edges />
-    <GridGraph.Nodes />
-  </GridGraph.Content>
+const [selected, setSelected] = useState<string | null>(null);
+
+<GridGraph
+  nodes={nodes}
+  edges={edges}
+  selectedNodeId={selected}
+  onSelectedNodeChange={setSelected}
+>
+  {/* ... */}
 </GridGraph>
 ```
 
-### Example: Custom Styling
+### Example: Auto Branches
 
 ```tsx
-<GridGraph nodes={nodes} edges={edges} className="my-graph" style={{ padding: "20px" width: "100%" }}>
-  <GridGraph.Header className="custom-header" style={{ backgroundColor: "#f5f5f5" }}>
-    <GridGraph.BranchDots style={{ opacity: 0.8 }} />
-    <GridGraph.BranchNames className="font-bold" />
-  </GridGraph.Header>
-  <GridGraph.Content style={{ border: "1px solid #ddd" }}>
-    <GridGraph.LaneLines className="opacity-50" />
-    <GridGraph.RowBackgrounds
-      selectedClassName="bg-blue-100"
-      hoveredClassName="bg-gray-50"
-    />
-    <GridGraph.Edges pathClassName="custom-edge" />
-    <GridGraph.Nodes labelClassName="text-sm" showLabels={true} />
-  </GridGraph.Content>
+// No need to specify branch property!
+<GridGraph 
+  nodes={[
+    { id: "1", label: "Start" },
+    { id: "2", label: "Feature" },
+  ]} 
+  edges={edges}
+  autoBranches={true}
+>
+  {/* ... */}
 </GridGraph>
 ```
-
-### Example: Auto-Named Branches
-
-```tsx
-// No need to specify branch properties!
-const nodes = [
-  { id: "start", label: "Start" },
-  { id: "feature-a", label: "Feature A" },
-  { id: "feature-b", label: "Feature B" },
-  { id: "merge", label: "Merge" },
-];
-
-const edges = [
-  { id: "e1", source: "start", target: "feature-a" },
-  { id: "e2", source: "start", target: "feature-b" },
-  { id: "e3", source: "feature-a", target: "merge" },
-  { id: "e4", source: "feature-b", target: "merge" },
-];
-
-<GridGraph nodes={nodes} edges={edges} autoNameBranches={true}>
-  <GridGraph.Header>
-    <GridGraph.BranchDots />
-    <GridGraph.BranchNames />
-  </GridGraph.Header>
-  <GridGraph.Content>
-    <GridGraph.LaneLines />
-    <GridGraph.RowBackgrounds />
-    <GridGraph.Edges />
-    <GridGraph.Nodes />
-  </GridGraph.Content>
-</GridGraph>
-```
-
-## Styling
-
-All components accept both `className` and `style` props for maximum flexibility:
-
-- **`className`** - For CSS frameworks (Tailwind, CSS modules) and reusable styles
-- **`style`** - For dynamic or one-off inline styles
-
-Some components also accept specialized className props:
-- `RowBackgrounds`: `selectedClassName`, `hoveredClassName`
-- `Edges`: `pathClassName`
-- `Nodes`: `labelClassName`, `selectedLabelClassName`
-
-## Auto-Named Branches
-
-Set `autoNameBranches={true}` to automatically name branches after their first node. In this mode:
-
-- No need to specify `branch` property on any nodes
-- Branches are automatically named using the ID of their first node
-- Validation rules for explicit branch naming are skipped
-- Perfect for simpler graphs where you don't need custom branch names
-
-## Validation
-
-When `autoNameBranches` is **false** (default):
-- Nodes with multiple children: all but one child must have explicit `branch` property
-- Nodes with multiple parents: must have explicit `branch` property
-- Graph must be acyclic (DAG)
-
-When `autoNameBranches` is **true**:
-- No branch property requirements
-- Graph must still be acyclic (DAG)
 
 ## Documentation
 
-Full documentation and interactive examples: https://artillence.github.io/grid-graph/
+Full documentation and interactive examples: [https://artillence.github.io/grid-graph/](https://artillence.github.io/grid-graph/)
+
+## License
+
+MIT
