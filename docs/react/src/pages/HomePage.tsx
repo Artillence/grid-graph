@@ -89,11 +89,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             bgcolor: "#fafafa",
           }}
         >
-          <GridGraph
-            nodes={nodes}
-            edges={edges}
-            style={{ width: "100%" }}
-          >
+          <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
             <GridGraph.Header>
               <GridGraph.BranchDots />
               <GridGraph.BranchNames />

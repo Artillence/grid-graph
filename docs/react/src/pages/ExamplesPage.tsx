@@ -1,5 +1,5 @@
 import { Box, Typography, Paper, Grid } from "@mui/material";
-import { GridGraph } from "grid-graph";
+import { GridGraph } from "grid-graph"; // Adjust this import path as needed
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -23,6 +23,7 @@ function GraphCard({
   let graphElement;
   let codeString;
 
+  // The switch statement correctly sets up the visual element and its corresponding code string.
   switch (composition) {
     case "minimal":
       graphElement = (
@@ -136,6 +137,14 @@ function GraphCard({
           <GridGraph.Header>
             <GridGraph.BranchDots />
             <GridGraph.BranchNames />
+            {/* 
+              This is the correct way to add a title.
+              It's a plain HTML element, and the Header component automatically
+              applies the correct margin for alignment.
+            */}
+            <h2 style={{ fontWeight: 'bold', fontSize: '1rem' }}>
+              My Graph Title
+            </h2>
           </GridGraph.Header>
           <GridGraph.Content>
             <GridGraph.LaneLines />
@@ -149,6 +158,10 @@ function GraphCard({
   <GridGraph.Header>
     <GridGraph.BranchDots />
     <GridGraph.BranchNames />
+    {/* The Header automatically aligns the first non-graph element. */}
+    <h2 style={{ fontWeight: 'normal', fontSize: '1rem', margin: 0 }}>
+      My Graph Title
+    </h2>
   </GridGraph.Header>
   <GridGraph.Content>
     <GridGraph.LaneLines />
@@ -157,6 +170,7 @@ function GraphCard({
     <GridGraph.Nodes />
   </GridGraph.Content>
 </GridGraph>`;
+      break;
   }
 
   const fullCode = `const nodes = ${JSON.stringify(nodes, null, 2)};
@@ -232,9 +246,9 @@ ${codeString}`;
 export default function ExamplesPage() {
   const graphExamples = [
     {
-      title: "Full Graph (All Components)",
+      title: "Full Graph",
       description:
-        "Complete graph with all features: branch dots, branch names, lane lines, row backgrounds, edges, and node labels.",
+        "Complete graph with all features, including a title in the header that is automatically aligned with the node labels.",
       composition: "full" as const,
       nodes: [
         { id: "1", label: "Start", branch: "alpha" },
@@ -327,33 +341,6 @@ export default function ExamplesPage() {
         { id: "e8", source: "f", target: "g" },
         { id: "e9", source: "g", target: "h" },
         { id: "e10", source: "a", target: "h" },
-      ],
-    },
-    {
-      title: "AI Training Pipeline",
-      description:
-        "An AI model training workflow with parallel data processing and model comparison.",
-      nodes: [
-        { id: "collect", label: "Collect Data" },
-        { id: "preprocess", label: "Preprocess" },
-        { id: "feature-a", label: "Feature Set A" },
-        { id: "feature-b", label: "Feature Set B", branch: "alt-features" },
-        { id: "train-rf", label: "Train Random Forest" },
-        { id: "train-nn", label: "Train Neural Net" },
-        { id: "evaluate", label: "Evaluate Models", branch: "main" },
-        { id: "select", label: "Select Best" },
-        { id: "deploy", label: "Deploy" },
-      ],
-      edges: [
-        { id: "e1", source: "collect", target: "preprocess" },
-        { id: "e2", source: "preprocess", target: "feature-a" },
-        { id: "e3", source: "preprocess", target: "feature-b" },
-        { id: "e4", source: "feature-a", target: "train-rf" },
-        { id: "e5", source: "feature-b", target: "train-nn" },
-        { id: "e6", source: "train-rf", target: "evaluate" },
-        { id: "e7", source: "train-nn", target: "evaluate" },
-        { id: "e8", source: "evaluate", target: "select" },
-        { id: "e9", source: "select", target: "deploy" },
       ],
     },
     {

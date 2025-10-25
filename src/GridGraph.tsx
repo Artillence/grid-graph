@@ -265,10 +265,9 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   );
 };
 
-// Header Component - renders children
-const Header: React.FC<{ 
-  children?: ReactNode; 
-  className?: string; 
+const Header: React.FC<{
+  children?: ReactNode;
+  className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
 }> = ({
@@ -277,7 +276,8 @@ const Header: React.FC<{
   style,
   onClick,
 }) => {
-  const { onHeaderClick } = useGridGraphContext();
+  const { onHeaderClick, graphWidth, config } = useGridGraphContext();
+  
   const [isHovered, setIsHovered] = useState(false);
 
   const isClickable = onClick !== undefined;
@@ -289,20 +289,78 @@ const Header: React.FC<{
     }
   };
 
+  // Automatically partition children into graph-specific and other content
+  const graphChildren: ReactNode[] = [];
+  const otherChildren: ReactNode[] = [];
+
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child)) {
+      const displayName = (child.type as any)?.displayName;
+      if (
+        displayName === 'GridGraph.BranchDots' ||
+        displayName === 'GridGraph.BranchNames'
+      ) {
+        graphChildren.push(child);
+      } else {
+        otherChildren.push(child);
+      }
+    } else {
+      // Keep non-element children like text nodes
+      otherChildren.push(child);
+    }
+  });
+
+  const headerStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    ...style,
+  };
+
   return (
-    <div 
+    <div
       className={`gg__header ${className || ''} ${isClickable ? 'gg__header-clickable' : ''} ${isHovered && isClickable ? 'gg__header-hovered' : ''}`}
-      style={style}
+      style={headerStyle}
       onClick={handleClick}
       onMouseEnter={() => isClickable && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {children}
+      {/* Conditionally render a sized wrapper for graph children */}
+      {graphChildren.length > 0 && (
+        <div
+          className="gg__header-graph-content"
+          style={{
+            // position: 'relative',
+            width: `${graphWidth}px`,
+            flexShrink: 0,
+            alignSelf: 'stretch',
+            
+          }}
+        >
+          {graphChildren}
+        </div>
+      )}
+
+      {/* Render the rest of the children as-is */}
+      {React.Children.map(otherChildren, (child, index) => {
+        // Only apply the style to the very first non-graph element
+        if (index === 0 && React.isValidElement(child)) {
+          // Clone the child to add our style, preserving its original props and style
+            const element = child as React.ReactElement<{ style?: React.CSSProperties }>;
+             return React.cloneElement(element, {
+            style: {
+              marginLeft: config.labelLeftMargin,
+              ...element.props.style, // Safely access the original style
+            },
+          });
+        }
+        return child;
+      })}
     </div>
   );
 };
 
 Header.displayName = "GridGraph.Header";
+
 
 // Content Component - renders children
 const Content: React.FC<{ children?: ReactNode; className?: string; style?: React.CSSProperties }> = ({

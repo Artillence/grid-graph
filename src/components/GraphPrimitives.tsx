@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Node, ResolvedGraphConfig } from "../types";
 import { getLaneXPosition } from "../utils";
 import { useBranchDrag } from "../hooks";
@@ -31,7 +31,7 @@ export const BranchDots: React.FC<{
         const color = branchColorMap.get(branchName) ?? "#ccc";
         const isDragging = draggedBranch === branchName;
         const isHoverTarget = hoverBranch === branchName;
-
+        
         return (
           <div
             key={`dot-${branchName}`}
