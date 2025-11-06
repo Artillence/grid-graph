@@ -122,18 +122,37 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   // Measure actual label widths after render
   useLayoutEffect(() => {
     if (containerRef.current && nodeRefs.current.size > 0) {
-      let maxLabelWidth = 0;
+      let maxContentWidth = 0;
       
-      // Find all node label elements
+      // Measure node labels
       const labelElements = containerRef.current.querySelectorAll('.gg__node-label');
       labelElements.forEach((el) => {
         const width = el.getBoundingClientRect().width;
-        if (width > maxLabelWidth) {
-          maxLabelWidth = width;
+        if (width > maxContentWidth) {
+          maxContentWidth = width;
         }
       });
       
-      const calculatedTotalWidth = graphWidth + config.labelLeftMargin + maxLabelWidth;
+      // Measure header content (titles, etc.) - anything after the graph content in header
+      const headerElement = containerRef.current.closest('.gg__container')?.querySelector('.gg__header');
+      if (headerElement) {
+        // Get all children after the graph content wrapper
+        const graphWrapper = headerElement.querySelector('.gg__header-graph-content');
+        let foundGraphWrapper = false;
+        
+        Array.from(headerElement.children).forEach((child) => {
+          if (child === graphWrapper) {
+            foundGraphWrapper = true;
+          } else if (foundGraphWrapper) {
+            const width = child.getBoundingClientRect().width;
+            if (width > maxContentWidth) {
+              maxContentWidth = width;
+            }
+          }
+        });
+      }
+      
+      const calculatedTotalWidth = graphWidth + config.labelLeftMargin + maxContentWidth;
       setTotalWidth(calculatedTotalWidth);
     }
   }, [nodes, graphWidth, config.labelLeftMargin]);
