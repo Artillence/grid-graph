@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, ReactNode } from "react";
+import React, { useState, useRef, ReactNode, useLayoutEffect } from "react";
 import { GraphProps, LayoutData, resolveAutoBranchConfig } from "./types";
 import { DEFAULT_CONFIG } from "./constants";
 import { computeHeaderHeight } from "./utils";
@@ -26,6 +26,7 @@ type GridGraphContextValue = {
   config: typeof DEFAULT_CONFIG;
   verticalLabels: boolean;
   graphWidth: number;
+  totalWidth: number;
   onNodeClick: (id: string) => void;
   onNodeDoubleClick?: (id: string) => void;
   onNodeContextMenu?: (id: string, event: React.MouseEvent) => void;
@@ -81,6 +82,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   const selected = isControlled ? selectedNodeId : internalSelected;
   
   const [hovered, setHovered] = useState<string | null>(null);
+  const [totalWidth, setTotalWidth] = useState<number>(0);
 
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
@@ -116,6 +118,25 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
   const graphWidth =
     (layoutData.maxCol + 1) * config.columnWidth + config.padding;
   const contentHeight = nodes.length * config.rowHeight;
+
+  // Measure actual label widths after render
+  useLayoutEffect(() => {
+    if (containerRef.current && nodeRefs.current.size > 0) {
+      let maxLabelWidth = 0;
+      
+      // Find all node label elements
+      const labelElements = containerRef.current.querySelectorAll('.gg__node-label');
+      labelElements.forEach((el) => {
+        const width = el.getBoundingClientRect().width;
+        if (width > maxLabelWidth) {
+          maxLabelWidth = width;
+        }
+      });
+      
+      const calculatedTotalWidth = graphWidth + config.labelLeftMargin + maxLabelWidth;
+      setTotalWidth(calculatedTotalWidth);
+    }
+  }, [nodes, graphWidth, config.labelLeftMargin]);
 
   // Check what's actually in the Header
   let showBranchDots = false;
@@ -233,6 +254,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
     config,
     verticalLabels,
     graphWidth,
+    totalWidth,
     onNodeClick: handleNodeClick,
     onNodeDoubleClick: handleNodeDoubleClick,
     onNodeContextMenu: handleNodeContextMenu,
@@ -255,6 +277,7 @@ const GridGraphRoot: React.FC<GridGraphProps> = ({
             "--gg-header-height": headerHeight,
             "--gg-content-height": `${contentHeight}px`,
             "--gg-graph-width": `${graphWidth}px`,
+            "--gg-total-width": `${totalWidth}px`,
             ...userStyle,
           } as React.CSSProperties
         }
