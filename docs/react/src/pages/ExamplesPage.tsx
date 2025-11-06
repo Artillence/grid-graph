@@ -1,7 +1,21 @@
 import { Box, Typography, Paper, Grid } from "@mui/material";
-import { GridGraph } from "grid-graph"; // Adjust this import path as needed
+import { GridGraph } from "grid-graph";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+// Add custom CSS for non-wrapping labels
+const styleElement = document.createElement('style');
+styleElement.textContent = `
+  .no-wrap-label {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+if (!document.head.querySelector('style[data-grid-graph-examples]')) {
+  styleElement.setAttribute('data-grid-graph-examples', 'true');
+  document.head.appendChild(styleElement);
+}
 
 interface GraphCardProps {
   title: string;
@@ -133,24 +147,28 @@ function GraphCard({
 
     default: // 'full'
       graphElement = (
-        <GridGraph nodes={nodes} edges={edges} style={{ width: "100%" }}>
+        <GridGraph nodes={nodes} edges={edges}>
           <GridGraph.Header>
             <GridGraph.BranchDots />
             <GridGraph.BranchNames />
-            {/* 
-              This is the correct way to add a title.
-              It's a plain HTML element, and the Header component automatically
-              applies the correct margin for alignment.
-            */}
-            <h2 style={{ fontWeight: 'bold', fontSize: '1rem' }}>
-              My Graph Title
+            <h2 style={{ 
+              fontWeight: 'bold', 
+              fontSize: '1rem',
+              margin: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              minWidth: 0,
+              flex: 1
+            }}>
+              {title}
             </h2>
           </GridGraph.Header>
           <GridGraph.Content>
             <GridGraph.LaneLines />
             <GridGraph.RowBackgrounds />
             <GridGraph.Edges />
-            <GridGraph.Nodes />
+            <GridGraph.Nodes labelClassName="no-wrap-label" />
           </GridGraph.Content>
         </GridGraph>
       );
@@ -159,8 +177,16 @@ function GraphCard({
     <GridGraph.BranchDots />
     <GridGraph.BranchNames />
     {/* The Header automatically aligns the first non-graph element. */}
-    <h2 style={{ fontWeight: 'normal', fontSize: '1rem', margin: 0 }}>
-      My Graph Title
+    <h2 style={{ 
+      fontWeight: 'bold', 
+      fontSize: '1rem',
+      margin: 0,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      maxWidth: '400px'
+    }}>
+      {title}
     </h2>
   </GridGraph.Header>
   <GridGraph.Content>
@@ -206,6 +232,10 @@ ${codeString}`;
                 borderRadius: 1,
                 p: 2,
                 height: 500,
+                resize: "both",
+                overflow: "auto",
+                minWidth: "200px",
+                minHeight: "200px",
               }}
             >
               {graphElement}
@@ -390,6 +420,24 @@ export default function ExamplesPage() {
           target: "review_conversation",
         },
         { id: "e4", source: "questionnaires_sent", target: "give_feedback" },
+      ],
+    },
+    {
+      title: "Long Title with Ellipsis",
+      description:
+        "Demonstrates how long titles and node labels are handled. The title is truncated with ellipsis after 70 characters, and one node label is even longer to show vertical space handling. ",
+      composition: "full" as const,
+      nodes: [
+        { id: "1", label: "Initialize System Components and Configuration", branch: "main" },
+        { id: "2", label: "This is an extremely long node label that demonstrates how the layout handles very long text content without breaking the visual structure of the graph, and nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nodand nod", branch: "feature-long" },
+        { id: "3", label: "Process Step", branch: "feature-b" },
+        { id: "4", label: "Final Step", branch: "main"},
+      ],
+      edges: [
+        { id: "e1", source: "1", target: "2" },
+        { id: "e2", source: "1", target: "3" },
+        { id: "e3", source: "2", target: "4" },
+        { id: "e4", source: "3", target: "4" },
       ],
     },
   ];
